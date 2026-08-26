@@ -25,7 +25,7 @@ export default function Watchlist() {
                 watching ? "bg-[#0c1220]" : "bg-[#070b12]"
               }`}
             >
-              <div>
+              <div className="min-w-0">
                 <div className="flex items-center gap-2 mb-0.5">
                   <span className="text-sm font-medium text-[#d4dbe8]">{inst.label}</span>
                   <span className="text-[10px] font-mono text-[#6b7a90] border border-[#1a2638] px-1.5 py-0.5 rounded">
@@ -36,15 +36,15 @@ export default function Watchlist() {
               </div>
               <button
                 onClick={() => toggle(inst.id)}
-                className={`relative w-10 h-5 rounded-full transition-colors duration-200 ${
-                  watching ? "bg-[#38bdf8]" : "bg-[#1a2638]"
-                }`}
+                role="switch"
+                aria-checked={watching}
                 aria-label={`${watching ? "Hapus" : "Tambah"} ${inst.label}`}
+                className="relative w-10 h-5 shrink-0 rounded-full transition-colors duration-200"
+                style={{ backgroundColor: watching ? "#38bdf8" : "#1a2638" }}
               >
                 <span
-                  className={`absolute top-0.5 w-4 h-4 rounded-full bg-white shadow transition-transform duration-200 ${
-                    watching ? "translate-x-5" : "translate-x-0.5"
-                  }`}
+                  className="absolute top-0.5 left-0.5 w-4 h-4 rounded-full bg-white shadow transition-transform duration-200"
+                  style={{ transform: watching ? "translateX(20px)" : "translateX(0px)" }}
                 />
               </button>
             </div>
