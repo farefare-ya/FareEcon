@@ -1,0 +1,10 @@
+{
+  "description": "Monitor global economic conditions and their impact on Indonesia with a user-friendly dashboard for retail investors, featuring real-time data and news.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}

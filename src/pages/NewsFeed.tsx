@@ -1,0 +1,142 @@
+import { useState } from "react";
+import type { Category, InstrumentId } from "@/lib/types";
+import { CATEGORIES, INSTRUMENTS } from "@/lib/types";
+import { useNews } from "@/hooks/useNews";
+import NewsCard from "@/components/NewsCard";
+import EmptyState from "@/components/EmptyState";
+
+export default function NewsFeed() {
+  const [activeInstrument, setActiveInstrument] = useState<InstrumentId | undefined>();
+  const [activeCategory, setActiveCategory] = useState<Category | undefined>();
+
+  const { news, loading, error } = useNews({ instrument: activeInstrument, maxItems: 80 });
+
+  const filtered = activeCategory
+    ? news.filter((n) => n.category === activeCategory)
+    : news;
+
+  return (
+    <div>
+      <div className="mb-6">
+        <h1 className="text-sm font-semibold text-[#d4dbe8] tracking-wide uppercase mb-0.5">
+          Feed Berita
+        </h1>
+        <p className="text-xs text-[#6b7a90]">
+          Berita ekonomi global lintas instrumen, urut terbaru
+        </p>
+      </div>
+
+      <div className="flex flex-col gap-3 mb-5">
+        <div className="flex items-center gap-2 flex-wrap">
+          <span className="text-[10px] font-mono text-[#6b7a90] uppercase tracking-wider w-20 shrink-0">
+            Instrumen
+          </span>
+          <FilterPill
+            label="Semua"
+            active={!activeInstrument}
+            onClick={() => setActiveInstrument(undefined)}
+          />
+          {INSTRUMENTS.map((inst) => (
+            <FilterPill
+              key={inst.id}
+              label={inst.label}
+              active={activeInstrument === inst.id}
+              onClick={() =>
+                setActiveInstrument((prev) => (prev === inst.id ? undefined : inst.id))
+              }
+            />
+          ))}
+        </div>
+
+        <div className="flex items-center gap-2 flex-wrap">
+          <span className="text-[10px] font-mono text-[#6b7a90] uppercase tracking-wider w-20 shrink-0">
+            Kategori
+          </span>
+          <FilterPill
+            label="Semua"
+            active={!activeCategory}
+            onClick={() => setActiveCategory(undefined)}
+          />
+          {CATEGORIES.map((cat) => (
+            <FilterPill
+              key={cat.id}
+              label={cat.label}
+              active={activeCategory === cat.id}
+              onClick={() =>
+                setActiveCategory((prev) => (prev === cat.id ? undefined : cat.id))
+              }
+            />
+          ))}
+        </div>
+      </div>
+
+      {error && (
+        <div className="border border-red-800/40 bg-red-950/30 p-4 mb-4 rounded">
+          <p className="text-xs font-mono text-red-400">Gagal memuat data: {error}</p>
+        </div>
+      )}
+
+      {!loading && filtered.length > 0 && (
+        <div className="text-[11px] text-[#6b7a90] mb-3">{filtered.length} artikel ditemukan</div>
+      )}
+
+      <div className="border border-[#1a2638]">
+        {loading ? (
+          <NewsLoadingSkeleton />
+        ) : filtered.length === 0 ? (
+          <EmptyState
+            title="Tidak ada berita"
+            description="Belum ada berita yang cocok dengan filter ini, atau Firestore belum memiliki data."
+          />
+        ) : (
+          <div className="divide-y divide-[#1a2638]">
+            {filtered.map((item) => (
+              <NewsCard key={item.id} item={item} />
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function FilterPill({
+  label,
+  active,
+  onClick,
+}: {
+  label: string;
+  active: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className={`text-[11px] px-2.5 py-1 rounded transition-colors duration-100 border ${
+        active
+          ? "bg-[#38bdf8]/15 text-[#38bdf8] border-[#38bdf8]/40 font-medium"
+          : "bg-transparent text-[#6b7a90] border-[#1a2638] hover:border-[#243450] hover:text-[#d4dbe8]"
+      }`}
+    >
+      {label}
+    </button>
+  );
+}
+
+function NewsLoadingSkeleton() {
+  return (
+    <div className="divide-y divide-[#1a2638]">
+      {Array.from({ length: 6 }).map((_, i) => (
+        <div key={i} className="p-4 animate-pulse">
+          <div className="flex gap-2 mb-2">
+            <div className="h-2 bg-[#1a2638] rounded w-16" />
+            <div className="h-2 bg-[#1a2638] rounded w-10" />
+          </div>
+          <div className="h-3 bg-[#1a2638] rounded w-3/4 mb-2" />
+          <div className="h-2 bg-[#1a2638] rounded w-full mb-1" />
+          <div className="h-2 bg-[#1a2638] rounded w-2/3" />
+        </div>
+      ))}
+    </div>
+  );
+}
