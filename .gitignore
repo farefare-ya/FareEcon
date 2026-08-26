@@ -11,6 +11,9 @@ logs/
 *.log
 .claude-replay.*
 .tmp-*
+econwatch-crawler/.env.danger
+econwatch-crawler/.env.gemini
+econwatch-crawler/econwatch-cc3d6-firebase-adminsdk-fbsvc-25390ee6c8.json
 
 # Platform-managed agentplat state, not project source. In the
 # client-initiated single-repo workspace layout (make's `Path: "."` spec) the
