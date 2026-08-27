@@ -73,13 +73,22 @@ async function main() {
     analysis.relatedInstruments.forEach((i) => touchedInstruments.add(i));
     processed++;
     console.log(`  + [${analysis.sentiment.toFixed(2)}] ${item.title.slice(0, 70)}`);
+
+    // Jeda kecil — Gemini free tier cuma 15 request/menit untuk model ini.
+    await new Promise((r) => setTimeout(r, 2000));
   }
 
   console.log(`Berita baru diproses: ${processed}`);
 
   // Hitung ulang sinyal ringkas untuk tiap instrumen yang baru dapat berita.
+  // Dibungkus try/catch per-instrumen: kalau 1 gagal (misal index Firestore
+  // belum siap), yang lain tetap lanjut, dan proses prune di bawah tetap jalan.
   for (const instrument of touchedInstruments) {
-    await recomputeSignal(instrument);
+    try {
+      await recomputeSignal(instrument);
+    } catch (err) {
+      console.warn(`  [skip-signal] ${instrument}: ${err.message.slice(0, 150)}`);
+    }
   }
 
   const deleted = await pruneOldNews(45);
