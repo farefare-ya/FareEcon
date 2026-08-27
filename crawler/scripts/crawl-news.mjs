@@ -3,7 +3,14 @@ import { RSS_SOURCES } from "./lib/sources.mjs";
 import { analyzeNewsItem } from "./lib/ai.mjs";
 import { newsIdFromUrl, newsExists, saveNews, upsertSignal, pruneOldNews } from "./lib/firestore.mjs";
 
-const parser = new Parser({ timeout: 15000 });
+const parser = new Parser({
+  timeout: 15000,
+  headers: {
+    // Beberapa server RSS menolak request tanpa User-Agent sama sekali.
+    // Ini identitas jujur, bukan menyamar jadi browser.
+    "User-Agent": "EconWatch-RSS-Reader/1.0 (+https://github.com/farefare-ya/FareEcon)",
+  },
+});
 
 // Batasi jumlah item baru yang dianalisis AI per-run, biar tidak
 // tiba-tiba menghabiskan kuota harian Gemini kalau ada lonjakan berita.
@@ -39,7 +46,15 @@ async function main() {
     const id = newsIdFromUrl(item.link);
     if (await newsExists(id)) continue; // sudah pernah diproses, skip (dedupe)
 
-    const analysis = await analyzeNewsItem(item.title, item.contentSnippet);
+    let analysis;
+    try {
+      analysis = await analyzeNewsItem(item.title, item.contentSnippet);
+    } catch (err) {
+      // 1 berita gagal dianalisis AI (rate limit, model error, dll) tidak boleh
+      // menggagalkan seluruh crawl — skip berita ini, lanjut ke berikutnya.
+      console.warn(`  [skip-ai] "${item.title.slice(0, 60)}": ${err.message}`);
+      continue;
+    }
     if (!analysis || analysis.confidence < 0.3) continue; // gak relevan finansial, skip
 
     await saveNews(id, {

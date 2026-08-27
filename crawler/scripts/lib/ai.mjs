@@ -6,8 +6,10 @@ if (!apiKey) {
 }
 
 const genAI = new GoogleGenerativeAI(apiKey);
-// Flash-Lite dipilih karena kuota free tier-nya paling besar (~1500 request/hari).
-const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash-lite" });
+// Update Agustus 2026: gemini-2.5-flash-lite sudah dimatikan Google untuk
+// user baru, ganti ke gemini-3.5-flash-lite. Kalau ini error lagi di masa
+// depan, cek nama model terbaru di aistudio.google.com.
+const model = genAI.getGenerativeModel({ model: "gemini-3.5-flash-lite" });
 
 const PROMPT_TEMPLATE = (title, snippet) => `
 Kamu menganalisis satu judul berita ekonomi untuk aplikasi pemantau pasar.
