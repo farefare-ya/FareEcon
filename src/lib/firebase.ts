@@ -171,6 +171,7 @@ export function subscribePrices(
           high: data.high ?? 0,
           low: data.low ?? 0,
           close: data.close ?? 0,
+          approximate: data.approximate ?? false,
         } as PriceCandle;
       });
       cb(candles);

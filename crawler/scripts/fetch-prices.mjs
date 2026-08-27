@@ -1,15 +1,16 @@
 import { fetchBtcCandles } from "./lib/fetchers/btc.mjs";
 import { fetchUsdIdrCandles } from "./lib/fetchers/usdidr.mjs";
+import { fetchGoldCandles } from "./lib/fetchers/gold.mjs";
 import { upsertPriceCandles } from "./lib/firestore.mjs";
 
-// Sengaja cuma 2 instrumen: BTC (CoinGecko) dan USDIDR (Frankfurter) — dua-duanya
-// gratis, open-source/terdokumentasi baik, dan TIDAK butuh API key sama sekali.
-// GOLD dan IHSG sengaja belum dimasukkan karena belum ada sumber gratis yang
-// solid untuk itu — daripada nambah API pihak ketiga yang meragukan, mending
-// jujur belum mendukung dulu. Bisa ditambah nanti kalau ketemu sumber yang layak.
+// BTC dan GOLD dua-duanya lewat CoinGecko (GOLD pakai proxy token PAXG yang
+// dipatok ke harga emas asli) — satu sumber, satu pola kode, tanpa API key.
+// USDIDR lewat Frankfurter, juga tanpa key. IHSG masih belum ada sumber
+// gratis yang solid, sengaja belum disertakan.
 const JOBS = [
   { instrument: "BTC", fetch: () => fetchBtcCandles(90) },
   { instrument: "USDIDR", fetch: () => fetchUsdIdrCandles(90) },
+  { instrument: "GOLD", fetch: () => fetchGoldCandles(90) },
 ];
 
 async function main() {

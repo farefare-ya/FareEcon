@@ -39,6 +39,7 @@ export interface PriceCandle {
   high: number;
   low: number;
   close: number;
+  approximate?: boolean; // true = cuma 1 nilai/hari (rate resmi), bukan OHLC bursa asli
 }
 
 export const INSTRUMENTS: { id: InstrumentId; label: string; description: string }[] = [
