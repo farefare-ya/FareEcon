@@ -172,11 +172,11 @@ function StatCell({
       ? "text-red-400"
       : "text-[#d4dbe8]";
   return (
-    <div className="bg-[#070b12] px-4 py-3">
-      <div className="text-[11px] text-[#6b7a90] uppercase tracking-wide mb-1">
+    <div className="bg-[#070b12] px-4 py-3 min-w-0">
+      <div className="text-[11px] text-[#6b7a90] uppercase tracking-wide mb-1 truncate">
         {label}
       </div>
-      <div className={`text-sm font-mono font-medium ${valColor}`}>{value}</div>
+      <div className={`text-sm font-mono font-medium whitespace-nowrap ${valColor}`}>{value}</div>
     </div>
   );
 }

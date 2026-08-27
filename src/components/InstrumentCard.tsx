@@ -35,42 +35,44 @@ export default function InstrumentCard({ signal }: { signal: Signal }) {
             {meta?.label ?? signal.instrument}
           </div>
         </div>
-        <RiskBadge level={signal.riskLevel} />
+        <div className="shrink-0">
+          <RiskBadge level={signal.riskLevel} />
+        </div>
       </div>
 
       <div className="grid grid-cols-3 gap-4">
-        <div>
-          <div className="text-[11px] text-[#6b7a90] uppercase tracking-wide mb-1.5">
+        <div className="min-w-0">
+          <div className="text-[11px] text-[#6b7a90] uppercase tracking-wide mb-1.5 whitespace-nowrap">
             Sentimen 7D
           </div>
-          <div className={`text-sm font-semibold ${sentColor}`}>
+          <div className={`text-sm font-semibold whitespace-nowrap ${sentColor}`}>
             {sentLabel}
           </div>
         </div>
-        <div>
-          <div className="text-[11px] text-[#6b7a90] uppercase tracking-wide mb-1.5">
+        <div className="min-w-0">
+          <div className="text-[11px] text-[#6b7a90] uppercase tracking-wide mb-1.5 whitespace-nowrap">
             Avg. Skor
           </div>
-          <div className={`text-sm font-mono font-medium ${sentColor}`}>
+          <div className={`text-sm font-mono font-medium whitespace-nowrap ${sentColor}`}>
             {signal.avgSentiment7d >= 0 ? "+" : ""}
             {signal.avgSentiment7d.toFixed(2)}
           </div>
         </div>
-        <div>
-          <div className="text-[11px] text-[#6b7a90] uppercase tracking-wide mb-1.5">
+        <div className="min-w-0">
+          <div className="text-[11px] text-[#6b7a90] uppercase tracking-wide mb-1.5 whitespace-nowrap">
             Berita 7D
           </div>
-          <div className="text-sm font-mono font-medium text-[#d4dbe8]">
+          <div className="text-sm font-mono font-medium text-[#d4dbe8] whitespace-nowrap">
             {signal.newsCount7d}
           </div>
         </div>
       </div>
 
-      <div className="flex items-center justify-between mt-5 pt-4 border-t border-[#1a2638]">
-        <span className="text-xs text-[#6b7a90]">
+      <div className="flex items-center justify-between gap-3 mt-5 pt-4 border-t border-[#1a2638]">
+        <span className="text-xs text-[#6b7a90] whitespace-nowrap">
           Diperbarui {formatTime(signal.updatedAt)}
         </span>
-        <span className="text-xs font-medium text-[#38bdf8] group-hover:text-[#7dd3fc] transition-colors">
+        <span className="text-xs font-medium text-[#38bdf8] group-hover:text-[#7dd3fc] transition-colors whitespace-nowrap">
           Lihat detail →
         </span>
       </div>

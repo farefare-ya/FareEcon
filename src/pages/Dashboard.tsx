@@ -41,19 +41,19 @@ export default function Dashboard() {
         )}
       </div>
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-[#1a2638] border border-[#1a2638] mb-6 text-xs">
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-px bg-[#1a2638] border border-[#1a2638] mb-6 text-xs">
         {(["low", "medium", "high"] as const).map((level) => {
           const count = watchedSignals.filter((s) => s.riskLevel === level).length;
           const labelMap = { low: "Rendah", medium: "Sedang", high: "Tinggi" };
           const colorMap = { low: "text-emerald-400", medium: "text-amber-400", high: "text-red-400" };
           return (
-            <div key={level} className="bg-[#070b12] px-5 py-3.5 flex items-center gap-3">
+            <div key={level} className="bg-[#070b12] px-5 py-3.5 flex items-center gap-3 whitespace-nowrap">
               <span className="text-[#6b7a90] uppercase tracking-wide">Risiko {labelMap[level]}</span>
               <span className={`font-semibold ${colorMap[level]}`}>{count}</span>
             </div>
           );
         })}
-        <div className="bg-[#070b12] px-5 py-3.5 flex items-center gap-3">
+        <div className="bg-[#070b12] px-5 py-3.5 flex items-center gap-3 whitespace-nowrap">
           <span className="text-[#6b7a90] uppercase tracking-wide">Dipantau</span>
           <span className="font-semibold text-[#38bdf8]">{watchedSignals.length}</span>
         </div>
@@ -75,7 +75,7 @@ export default function Dashboard() {
           description="Belum ada data di Firestore. Tunggu sinkronisasi pertama dari job crawler."
         />
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(380px,1fr))] gap-5">
           {watchedSignals.map((signal) => (
             <InstrumentCard key={signal.instrument} signal={signal} />
           ))}
@@ -96,12 +96,12 @@ export default function Dashboard() {
 
 function LoadingSkeleton() {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+    <div className="grid grid-cols-[repeat(auto-fit,minmax(380px,1fr))] gap-5">
       {Array.from({ length: 4 }).map((_, i) => (
-        <div key={i} className="border border-[#1a2638] bg-[#0c1220] p-5 animate-pulse">
+        <div key={i} className="border border-[#1a2638] bg-[#0c1220] p-6 animate-pulse">
           <div className="h-3 bg-[#1a2638] rounded w-2/3 mb-3" />
-          <div className="h-5 bg-[#1a2638] rounded w-1/3 mb-4" />
-          <div className="grid grid-cols-3 gap-3">
+          <div className="h-5 bg-[#1a2638] rounded w-1/3 mb-5" />
+          <div className="grid grid-cols-3 gap-4">
             {Array.from({ length: 3 }).map((_, j) => (
               <div key={j}>
                 <div className="h-2 bg-[#1a2638] rounded mb-2" />
