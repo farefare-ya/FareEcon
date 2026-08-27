@@ -47,7 +47,7 @@ export default function InstrumentDetail() {
       <div className="flex items-start justify-between mb-6">
         <div>
           <div className="text-[11px] text-[#6b7a90] mb-1">{meta.description}</div>
-          <h1 className="text-2xl font-mono font-medium text-[#d4dbe8] tracking-tight">
+          <h1 className="text-3xl font-semibold text-[#d4dbe8] tracking-tight">
             {meta.label}
           </h1>
         </div>
@@ -56,7 +56,7 @@ export default function InstrumentDetail() {
 
       {anyError && (
         <div className="border border-red-800/40 bg-red-950/30 p-4 mb-6 rounded">
-          <p className="text-xs font-mono text-red-400">Gagal memuat data: {anyError}</p>
+          <p className="text-xs text-red-400">Gagal memuat data: {anyError}</p>
         </div>
       )}
 
@@ -103,17 +103,17 @@ export default function InstrumentDetail() {
 
       <div className="border border-[#1a2638] bg-[#0c1220] mb-6">
         <div className="border-b border-[#1a2638] px-4 py-2.5 flex items-center justify-between">
-          <span className="text-[10px] font-mono text-[#6b7a90] uppercase tracking-wider">
+          <span className="text-[11px] text-[#6b7a90] uppercase tracking-wide">
             Harga Historis — Candlestick
           </span>
           {!priceLoading && candles.length > 0 && (
-            <span className="text-[10px] font-mono text-[#6b7a90]">{candles.length} candle</span>
+            <span className="text-[11px] text-[#6b7a90]">{candles.length} candle</span>
           )}
         </div>
         <div className="h-72">
           {priceLoading ? (
             <div className="h-full flex items-center justify-center">
-              <span className="text-xs font-mono text-[#6b7a90] animate-pulse">
+              <span className="text-xs text-[#6b7a90] animate-pulse">
                 Memuat data harga...
               </span>
             </div>
@@ -130,11 +130,11 @@ export default function InstrumentDetail() {
 
       <div className="border border-[#1a2638]">
         <div className="border-b border-[#1a2638] px-4 py-2.5 flex items-center justify-between">
-          <span className="text-[10px] font-mono text-[#6b7a90] uppercase tracking-wider">
+          <span className="text-[11px] text-[#6b7a90] uppercase tracking-wide">
             Berita Terkait
           </span>
           {!newsLoading && (
-            <span className="text-[10px] font-mono text-[#6b7a90]">{news.length} artikel</span>
+            <span className="text-[11px] text-[#6b7a90]">{news.length} artikel</span>
           )}
         </div>
         {newsLoading ? (
@@ -145,7 +145,7 @@ export default function InstrumentDetail() {
             description="Berita untuk instrumen ini belum tersedia di Firestore."
           />
         ) : (
-          <div className="divide-y divide-[#1a2638]">
+          <div className="divide-y divide-[#1a2638] max-h-[600px] overflow-y-auto">
             {news.map((item) => (
               <NewsCard key={item.id} item={item} />
             ))}
@@ -173,7 +173,7 @@ function StatCell({
       : "text-[#d4dbe8]";
   return (
     <div className="bg-[#070b12] px-4 py-3">
-      <div className="text-[10px] font-mono text-[#6b7a90] uppercase tracking-wider mb-1">
+      <div className="text-[11px] text-[#6b7a90] uppercase tracking-wide mb-1">
         {label}
       </div>
       <div className={`text-sm font-mono font-medium ${valColor}`}>{value}</div>

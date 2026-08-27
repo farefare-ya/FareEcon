@@ -31,7 +31,7 @@ export default function Dashboard() {
           </p>
         </div>
         {highRiskCount > 0 && (
-          <div className="flex items-center gap-2 px-3 py-1.5 bg-red-950/50 border border-red-800/40 rounded text-xs font-mono text-red-400">
+          <div className="flex items-center gap-2 px-3 py-1.5 bg-red-950/50 border border-red-800/40 rounded text-xs text-red-400">
             <span className="relative flex h-1.5 w-1.5">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75" />
               <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-red-500" />
@@ -41,27 +41,27 @@ export default function Dashboard() {
         )}
       </div>
 
-      <div className="grid grid-cols-4 gap-px bg-[#1a2638] border border-[#1a2638] mb-6 text-[10px] font-mono">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-[#1a2638] border border-[#1a2638] mb-6 text-xs">
         {(["low", "medium", "high"] as const).map((level) => {
           const count = watchedSignals.filter((s) => s.riskLevel === level).length;
           const labelMap = { low: "Rendah", medium: "Sedang", high: "Tinggi" };
           const colorMap = { low: "text-emerald-400", medium: "text-amber-400", high: "text-red-400" };
           return (
-            <div key={level} className="bg-[#070b12] px-4 py-2.5 flex items-center gap-3">
-              <span className="text-[#6b7a90] uppercase tracking-wider">Risiko {labelMap[level]}</span>
+            <div key={level} className="bg-[#070b12] px-5 py-3.5 flex items-center gap-3">
+              <span className="text-[#6b7a90] uppercase tracking-wide">Risiko {labelMap[level]}</span>
               <span className={`font-semibold ${colorMap[level]}`}>{count}</span>
             </div>
           );
         })}
-        <div className="bg-[#070b12] px-4 py-2.5 flex items-center gap-3">
-          <span className="text-[#6b7a90] uppercase tracking-wider">Dipantau</span>
+        <div className="bg-[#070b12] px-5 py-3.5 flex items-center gap-3">
+          <span className="text-[#6b7a90] uppercase tracking-wide">Dipantau</span>
           <span className="font-semibold text-[#38bdf8]">{watchedSignals.length}</span>
         </div>
       </div>
 
       {error && (
         <div className="border border-red-800/40 bg-red-950/30 p-4 rounded mb-6">
-          <p className="text-xs font-mono text-red-400">
+          <p className="text-xs text-red-400">
             Gagal terhubung ke Firestore: {error}. Pastikan konfigurasi Firebase sudah benar.
           </p>
         </div>
@@ -75,7 +75,7 @@ export default function Dashboard() {
           description="Belum ada data di Firestore. Tunggu sinkronisasi pertama dari job crawler."
         />
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
           {watchedSignals.map((signal) => (
             <InstrumentCard key={signal.instrument} signal={signal} />
           ))}

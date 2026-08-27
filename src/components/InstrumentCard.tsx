@@ -20,35 +20,35 @@ export default function InstrumentCard({ signal }: { signal: Signal }) {
   return (
     <button
       onClick={() => navigate(`/instrument/${signal.instrument}`)}
-      className="w-full text-left border border-[#1a2638] bg-[#0c1220] hover:border-[#243450] hover:bg-[#0f1a2c] transition-all duration-150 p-5 group cursor-pointer relative overflow-hidden"
+      className="w-full text-left border border-[#1a2638] bg-[#0c1220] hover:border-[#243450] hover:bg-[#0f1a2c] transition-all duration-150 p-6 group cursor-pointer relative overflow-hidden"
     >
       <div className="absolute top-0 left-0 right-0 h-0.5 bg-[#1a2638]">
         <div className={`h-full ${bar.width} ${bar.color} transition-all`} />
       </div>
 
-      <div className="flex items-start justify-between mb-3">
-        <div>
-          <div className="text-[11px] text-[#6b7a90] mb-0.5">
+      <div className="flex items-start justify-between gap-3 mb-5">
+        <div className="min-w-0">
+          <div className="text-xs text-[#6b7a90] mb-1 truncate">
             {meta?.description ?? signal.instrument}
           </div>
-          <div className="text-xl font-mono font-medium text-[#d4dbe8] tracking-tight">
+          <div className="text-2xl font-semibold text-[#d4dbe8] tracking-tight">
             {meta?.label ?? signal.instrument}
           </div>
         </div>
         <RiskBadge level={signal.riskLevel} />
       </div>
 
-      <div className="grid grid-cols-3 gap-3 mt-4">
+      <div className="grid grid-cols-3 gap-4">
         <div>
-          <div className="text-[10px] text-[#6b7a90] font-mono uppercase tracking-wider mb-1">
-            Sentimen 7d
+          <div className="text-[11px] text-[#6b7a90] uppercase tracking-wide mb-1.5">
+            Sentimen 7D
           </div>
-          <div className={`text-sm font-mono font-medium ${sentColor}`}>
+          <div className={`text-sm font-semibold ${sentColor}`}>
             {sentLabel}
           </div>
         </div>
         <div>
-          <div className="text-[10px] text-[#6b7a90] font-mono uppercase tracking-wider mb-1">
+          <div className="text-[11px] text-[#6b7a90] uppercase tracking-wide mb-1.5">
             Avg. Skor
           </div>
           <div className={`text-sm font-mono font-medium ${sentColor}`}>
@@ -57,8 +57,8 @@ export default function InstrumentCard({ signal }: { signal: Signal }) {
           </div>
         </div>
         <div>
-          <div className="text-[10px] text-[#6b7a90] font-mono uppercase tracking-wider mb-1">
-            Berita 7d
+          <div className="text-[11px] text-[#6b7a90] uppercase tracking-wide mb-1.5">
+            Berita 7D
           </div>
           <div className="text-sm font-mono font-medium text-[#d4dbe8]">
             {signal.newsCount7d}
@@ -66,12 +66,12 @@ export default function InstrumentCard({ signal }: { signal: Signal }) {
         </div>
       </div>
 
-      <div className="flex items-center justify-between mt-4 pt-3 border-t border-[#1a2638]">
-        <span className="text-[10px] font-mono text-[#6b7a90]">
+      <div className="flex items-center justify-between mt-5 pt-4 border-t border-[#1a2638]">
+        <span className="text-xs text-[#6b7a90]">
           Diperbarui {formatTime(signal.updatedAt)}
         </span>
-        <span className="text-[10px] font-mono text-[#38bdf8] group-hover:text-[#7dd3fc] transition-colors">
-          Lihat detail
+        <span className="text-xs font-medium text-[#38bdf8] group-hover:text-[#7dd3fc] transition-colors">
+          Lihat detail →
         </span>
       </div>
     </button>

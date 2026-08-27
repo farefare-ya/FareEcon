@@ -28,7 +28,7 @@ export default function NewsFeed() {
 
       <div className="flex flex-col gap-3 mb-5">
         <div className="flex items-center gap-2 flex-wrap">
-          <span className="text-[10px] font-mono text-[#6b7a90] uppercase tracking-wider w-20 shrink-0">
+          <span className="text-[11px] text-[#6b7a90] uppercase tracking-wide w-20 shrink-0">
             Instrumen
           </span>
           <FilterPill
@@ -49,7 +49,7 @@ export default function NewsFeed() {
         </div>
 
         <div className="flex items-center gap-2 flex-wrap">
-          <span className="text-[10px] font-mono text-[#6b7a90] uppercase tracking-wider w-20 shrink-0">
+          <span className="text-[11px] text-[#6b7a90] uppercase tracking-wide w-20 shrink-0">
             Kategori
           </span>
           <FilterPill
@@ -72,7 +72,7 @@ export default function NewsFeed() {
 
       {error && (
         <div className="border border-red-800/40 bg-red-950/30 p-4 mb-4 rounded">
-          <p className="text-xs font-mono text-red-400">Gagal memuat data: {error}</p>
+          <p className="text-xs text-red-400">Gagal memuat data: {error}</p>
         </div>
       )}
 
@@ -89,7 +89,7 @@ export default function NewsFeed() {
             description="Belum ada berita yang cocok dengan filter ini, atau Firestore belum memiliki data."
           />
         ) : (
-          <div className="divide-y divide-[#1a2638]">
+          <div className="divide-y divide-[#1a2638] max-h-[calc(100vh-280px)] overflow-y-auto">
             {filtered.map((item) => (
               <NewsCard key={item.id} item={item} />
             ))}

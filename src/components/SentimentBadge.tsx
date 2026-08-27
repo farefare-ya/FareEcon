@@ -9,7 +9,7 @@ export default function SentimentBadge({ score }: { score: number }) {
 
   return (
     <span
-      className={`inline-flex items-center gap-1 px-2 py-0.5 rounded border text-[10px] font-mono font-medium tracking-wider ${classes}`}
+      className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full border text-xs font-mono font-medium whitespace-nowrap ${classes}`}
     >
       {arrow} {label}
     </span>

@@ -22,9 +22,9 @@ export default function RiskBadge({ level }: { level: RiskLevel }) {
   const c = config[level];
   return (
     <span
-      className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded border text-[10px] font-mono font-medium tracking-wider ${c.classes}`}
+      className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full border text-xs font-semibold tracking-wide whitespace-nowrap ${c.classes}`}
     >
-      <span className={`w-1.5 h-1.5 rounded-full ${c.dot}`} />
+      <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${c.dot}`} />
       RISIKO {c.label}
     </span>
   );

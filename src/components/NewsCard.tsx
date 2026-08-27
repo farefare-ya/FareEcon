@@ -25,8 +25,8 @@ export default function NewsCard({ item }: { item: NewsItem }) {
         <div className="flex items-center gap-2 flex-wrap">
           <span className="text-[11px] text-[#6b7a90]">{item.source}</span>
           <span className="text-[#1a2638]">·</span>
-          <span className="text-[11px] font-mono text-[#6b7a90]">{timeAgo(item.publishedAt)}</span>
-          <span className="text-[10px] font-mono text-[#38bdf8]/60 border border-[#38bdf8]/20 px-1.5 py-0.5 rounded">
+          <span className="text-[11px] text-[#6b7a90]">{timeAgo(item.publishedAt)}</span>
+          <span className="text-[11px] text-[#38bdf8]/60 border border-[#38bdf8]/20 px-1.5 py-0.5 rounded">
             {catLabel}
           </span>
         </div>
@@ -40,7 +40,7 @@ export default function NewsCard({ item }: { item: NewsItem }) {
         {item.relatedInstruments.map((inst) => (
           <span
             key={inst}
-            className="text-[10px] font-mono font-medium text-[#38bdf8]/70 bg-[#38bdf8]/5 border border-[#38bdf8]/15 px-1.5 py-0.5 rounded"
+            className="text-[11px] font-medium text-[#38bdf8]/70 bg-[#38bdf8]/5 border border-[#38bdf8]/15 px-1.5 py-0.5 rounded"
           >
             {inst}
           </span>

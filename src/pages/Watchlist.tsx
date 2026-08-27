@@ -28,7 +28,7 @@ export default function Watchlist() {
               <div className="min-w-0">
                 <div className="flex items-center gap-2 mb-0.5">
                   <span className="text-sm font-medium text-[#d4dbe8]">{inst.label}</span>
-                  <span className="text-[10px] font-mono text-[#6b7a90] border border-[#1a2638] px-1.5 py-0.5 rounded">
+                  <span className="text-[11px] text-[#6b7a90] border border-[#1a2638] px-1.5 py-0.5 rounded">
                     {inst.id}
                   </span>
                 </div>
