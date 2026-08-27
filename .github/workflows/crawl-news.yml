@@ -10,7 +10,7 @@ on:
 jobs:
   crawl:
     runs-on: ubuntu-latest
-    timeout-minutes: 8
+    timeout-minutes: 15
     # Semua step di job ini jalan dari dalam folder crawler/,
     # karena repo ini gabungan frontend (di root) + backend (di folder ini).
     defaults:

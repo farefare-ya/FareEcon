@@ -95,6 +95,7 @@ async function main() {
   console.log(`Berita lama (>45 hari) dihapus: ${deleted}`);
 
   console.log("Selesai.");
+  process.exit(0); // keluar paksa — koneksi Firestore Admin SDK suka menggantung kalau tidak dipaksa
 }
 
 // Ambil rata-rata sentimen 7 hari terakhir untuk satu instrumen dan

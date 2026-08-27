@@ -31,6 +31,7 @@ async function main() {
   }
 
   console.log("Selesai.");
+  process.exit(0); // keluar paksa — koneksi Firestore Admin SDK suka menggantung kalau tidak dipaksa
 }
 
 main().catch((err) => {
