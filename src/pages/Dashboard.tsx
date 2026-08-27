@@ -1,8 +1,16 @@
 import { useSignals } from "@/hooks/useSignals";
+import { useNews } from "@/hooks/useNews";
 import { useWatchlist } from "@/hooks/useWatchlist";
 import { INSTRUMENTS } from "@/lib/types";
 import InstrumentCard from "@/components/InstrumentCard";
+import NewsCard from "@/components/NewsCard";
 import EmptyState from "@/components/EmptyState";
+
+// Kategori yang dianggap paling berdampak luas — kebijakan moneter (Fed/BI),
+// geopolitik (perang, sanksi), dan korporasi besar (earnings raksasa teknologi).
+// Bukan "trending" beneran (itu butuh deteksi lintas-sumber yang lebih canggih),
+// tapi cara sederhana & jujur buat naikkan berita yang kemungkinan besar penting.
+const VITAL_CATEGORIES = ["monetary_policy", "geopolitics", "corporate"];
 
 export default function Dashboard() {
   const { signals, loading, error } = useSignals();
@@ -13,6 +21,12 @@ export default function Dashboard() {
     .filter(Boolean) as ReturnType<typeof useSignals>["signals"];
 
   const highRiskCount = watchedSignals.filter((s) => s.riskLevel === "high").length;
+
+  const { news } = useNews({ maxItems: 80 });
+  const highlights = [...news]
+    .filter((n) => VITAL_CATEGORIES.includes(n.category))
+    .sort((a, b) => Math.abs(b.sentiment) - Math.abs(a.sentiment))
+    .slice(0, 4);
 
   return (
     <div>
@@ -79,6 +93,24 @@ export default function Dashboard() {
           {watchedSignals.map((signal) => (
             <InstrumentCard key={signal.instrument} signal={signal} />
           ))}
+        </div>
+      )}
+
+      {highlights.length > 0 && (
+        <div className="mt-8">
+          <div className="flex items-baseline justify-between mb-3">
+            <h2 className="text-xs font-semibold text-[#d4dbe8] uppercase tracking-wide">
+              Sorotan Utama
+            </h2>
+            <span className="text-[11px] text-[#6b7a90]">
+              Kebijakan moneter, geopolitik &amp; korporasi berdampak besar
+            </span>
+          </div>
+          <div className="grid grid-cols-[repeat(auto-fit,minmax(380px,1fr))] gap-3">
+            {highlights.map((item) => (
+              <NewsCard key={item.id} item={item} />
+            ))}
+          </div>
         </div>
       )}
 
