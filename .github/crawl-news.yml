@@ -1,0 +1,33 @@
+name: Crawl News
+
+on:
+  schedule:
+    # Tiap 30 menit. Sintaks cron: menit jam tanggal bulan hari-minggu.
+    # Ini waktu UTC — 30 menit sekali sudah lebih dari cukup untuk berita ekonomi.
+    - cron: "*/30 * * * *"
+  workflow_dispatch: {} # supaya bisa dipicu manual dari tab Actions kalau mau tes
+
+jobs:
+  crawl:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    # Semua step di job ini jalan dari dalam folder crawler/,
+    # karena repo ini gabungan frontend (di root) + backend (di folder ini).
+    defaults:
+      run:
+        working-directory: crawler
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+          cache-dependency-path: crawler/package-lock.json
+
+      - run: npm ci
+
+      - run: npm run crawl
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
