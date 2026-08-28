@@ -5,11 +5,11 @@ import SentimentBadge from "./SentimentBadge";
 function timeAgo(date: Date): string {
   const diff = Date.now() - date.getTime();
   const mins = Math.floor(diff / 60000);
-  if (mins < 60) return `${mins}m lalu`;
+  if (mins < 60) return `${mins} menit lalu`;
   const hrs = Math.floor(mins / 60);
-  if (hrs < 24) return `${hrs}j lalu`;
+  if (hrs < 24) return `${hrs} jam lalu`;
   const days = Math.floor(hrs / 24);
-  return `${days}h lalu`;
+  return `${days} hari lalu`;
 }
 
 export default function NewsCard({ item }: { item: NewsItem }) {
