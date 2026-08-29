@@ -38,6 +38,24 @@ export const RSS_SOURCES = [
     instrumentHints: ["IHSG", "USDIDR"],
   },
 
+  // Ditambah & diverifikasi langsung (isinya beneran dicek, bukan cuma
+  // disalin dari daftar lama) — konten relevan: BI, OJK, rupiah, SRBI,
+  // perbankan. Catatan: ANTARA punya banyak feed "ekonomi" yang jebakan —
+  // /rss/ekonomi.xml ternyata isinya otomotif, JANGAN dipakai. Yang di
+  // bawah ini sudah dites isinya benar.
+  {
+    name: "ANTARA - Finansial",
+    url: "https://www.antaranews.com/rss/ekonomi-finansial.xml",
+    region: "id",
+    instrumentHints: ["IHSG", "USDIDR"],
+  },
+  {
+    name: "ANTARA - Bisnis",
+    url: "https://www.antaranews.com/rss/ekonomi-bisnis.xml",
+    region: "id",
+    instrumentHints: ["IHSG", "USDIDR"],
+  },
+
   // Sumber global — verifikasi dulu sebelum dipakai, feed luar negeri
   // sering berubah kebijakan RSS-nya.
   {
