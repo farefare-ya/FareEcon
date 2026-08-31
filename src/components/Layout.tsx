@@ -1,16 +1,26 @@
 import { useEffect, useState } from "react";
 import { NavLink, Outlet } from "react-router-dom";
+import { LayoutDashboard, Newspaper, Star } from "lucide-react";
 
 const navItems = [
-  { to: "/", label: "Dashboard" },
-  { to: "/news", label: "Feed Berita" },
-  { to: "/watchlist", label: "Watchlist" },
+  { to: "/", label: "Dashboard", icon: LayoutDashboard },
+  { to: "/news", label: "Feed Berita", icon: Newspaper },
+  { to: "/watchlist", label: "Watchlist", icon: Star },
 ];
 
 export default function Layout() {
   return (
-    <div className="min-h-screen bg-[#070b12] flex">
-      <aside className="w-56 shrink-0 border-r border-[#1a2638] flex flex-col sticky top-0 h-screen overflow-y-auto">
+    <div className="min-h-screen bg-[#070b12] flex flex-col md:flex-row">
+      {/* Top bar — cuma tampil di mobile/tablet (di bawah breakpoint md) */}
+      <div className="md:hidden h-14 shrink-0 flex items-center justify-between px-4 border-b border-[#1a2638] sticky top-0 bg-[#070b12] z-20">
+        <span className="text-[#d4dbe8] font-semibold text-base tracking-tight">
+          FareEcon
+        </span>
+        <ClockDisplay compact />
+      </div>
+
+      {/* Sidebar — cuma tampil di desktop (md ke atas) */}
+      <aside className="hidden md:flex w-56 shrink-0 border-r border-[#1a2638] flex-col sticky top-0 h-screen overflow-y-auto">
         <div className="h-16 flex items-center px-5 border-b border-[#1a2638]">
           <span className="text-[#d4dbe8] font-semibold text-base tracking-tight">
             FareEcon
@@ -41,11 +51,35 @@ export default function Layout() {
         </div>
       </aside>
 
-      <main className="flex-1 min-w-0 px-6 py-6">
+      {/* Konten utama — padding lebih kecil di mobile, dan dikasih jarak
+          bawah (pb-20) supaya gak ketutup bottom tab bar */}
+      <main className="flex-1 min-w-0 px-4 py-4 pb-20 md:px-6 md:py-6 md:pb-6">
         <div className="max-w-5xl mx-auto">
           <Outlet />
         </div>
       </main>
+
+      {/* Bottom tab bar — cuma tampil di mobile/tablet */}
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 h-16 border-t border-[#1a2638] bg-[#070b12] flex items-stretch z-20">
+        {navItems.map((item) => {
+          const Icon = item.icon;
+          return (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              end={item.to === "/"}
+              className={({ isActive }) =>
+                `flex-1 flex flex-col items-center justify-center gap-1 text-[11px] transition-colors duration-150 ${
+                  isActive ? "text-[#38bdf8]" : "text-[#6b7a90]"
+                }`
+              }
+            >
+              <Icon size={20} strokeWidth={2} />
+              {item.label}
+            </NavLink>
+          );
+        })}
+      </nav>
     </div>
   );
 }
@@ -54,7 +88,7 @@ export default function Layout() {
 // berkala tiap 30 menit/harian lewat cron, bukan real-time streaming, jadi
 // label "LIVE" sebenarnya kurang akurat). Jam ini kasih referensi waktu
 // yang jelas dan jujur ke user, sekaligus jadi elemen yang terasa hidup.
-function ClockDisplay() {
+function ClockDisplay({ compact = false }: { compact?: boolean }) {
   const [now, setNow] = useState(new Date());
 
   useEffect(() => {
@@ -70,8 +104,12 @@ function ClockDisplay() {
   const time = now.toLocaleTimeString("id-ID", {
     hour: "2-digit",
     minute: "2-digit",
-    second: "2-digit",
+    second: compact ? undefined : "2-digit",
   });
+
+  if (compact) {
+    return <div className="text-xs text-[#6b7a90] font-medium">{time}</div>;
+  }
 
   return (
     <div>
