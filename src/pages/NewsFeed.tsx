@@ -18,17 +18,17 @@ export default function NewsFeed() {
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-sm font-semibold text-[#d4dbe8] tracking-wide uppercase mb-0.5">
+        <h1 className="text-sm font-semibold text-foreground tracking-wide uppercase mb-0.5">
           Feed Berita
         </h1>
-        <p className="text-xs text-[#6b7a90]">
+        <p className="text-xs text-muted-foreground">
           Berita ekonomi global lintas instrumen, urut terbaru
         </p>
       </div>
 
       <div className="flex flex-col gap-3 mb-5">
         <div className="flex items-center gap-2 flex-wrap">
-          <span className="text-[11px] text-[#6b7a90] uppercase tracking-wide w-20 shrink-0">
+          <span className="text-[11px] text-muted-foreground uppercase tracking-wide w-20 shrink-0">
             Instrumen
           </span>
           <FilterPill
@@ -49,7 +49,7 @@ export default function NewsFeed() {
         </div>
 
         <div className="flex items-center gap-2 flex-wrap">
-          <span className="text-[11px] text-[#6b7a90] uppercase tracking-wide w-20 shrink-0">
+          <span className="text-[11px] text-muted-foreground uppercase tracking-wide w-20 shrink-0">
             Kategori
           </span>
           <FilterPill
@@ -71,16 +71,16 @@ export default function NewsFeed() {
       </div>
 
       {error && (
-        <div className="border border-red-800/40 bg-red-950/30 p-4 mb-4 rounded">
-          <p className="text-xs text-red-400">Gagal memuat data: {error}</p>
+        <div className="border border-[var(--risk-high-border)] bg-[var(--risk-high-bg)] p-4 mb-4 rounded">
+          <p className="text-xs text-[var(--risk-high-text)]">Gagal memuat data: {error}</p>
         </div>
       )}
 
       {!loading && filtered.length > 0 && (
-        <div className="text-[11px] text-[#6b7a90] mb-3">{filtered.length} artikel ditemukan</div>
+        <div className="text-[11px] text-muted-foreground mb-3">{filtered.length} artikel ditemukan</div>
       )}
 
-      <div className="border border-[#1a2638]">
+      <div className="border border-border">
         {loading ? (
           <NewsLoadingSkeleton />
         ) : filtered.length === 0 ? (
@@ -89,7 +89,7 @@ export default function NewsFeed() {
             description="Belum ada berita yang cocok dengan filter ini, atau Firestore belum memiliki data."
           />
         ) : (
-          <div className="divide-y divide-[#1a2638] max-h-[calc(100vh-280px)] overflow-y-auto">
+          <div className="divide-y divide-border">
             {filtered.map((item) => (
               <NewsCard key={item.id} item={item} />
             ))}
@@ -114,8 +114,8 @@ function FilterPill({
       onClick={onClick}
       className={`text-[11px] px-2.5 py-1 rounded transition-colors duration-100 border ${
         active
-          ? "bg-[#38bdf8]/15 text-[#38bdf8] border-[#38bdf8]/40 font-medium"
-          : "bg-transparent text-[#6b7a90] border-[#1a2638] hover:border-[#243450] hover:text-[#d4dbe8]"
+          ? "bg-accent/15 text-accent border-accent/40 font-medium"
+          : "bg-transparent text-muted-foreground border-border hover:border-[var(--border-hover)] hover:text-foreground"
       }`}
     >
       {label}
@@ -125,16 +125,16 @@ function FilterPill({
 
 function NewsLoadingSkeleton() {
   return (
-    <div className="divide-y divide-[#1a2638]">
+    <div className="divide-y divide-border">
       {Array.from({ length: 6 }).map((_, i) => (
         <div key={i} className="p-4 animate-pulse">
           <div className="flex gap-2 mb-2">
-            <div className="h-2 bg-[#1a2638] rounded w-16" />
-            <div className="h-2 bg-[#1a2638] rounded w-10" />
+            <div className="h-2 bg-border rounded w-16" />
+            <div className="h-2 bg-border rounded w-10" />
           </div>
-          <div className="h-3 bg-[#1a2638] rounded w-3/4 mb-2" />
-          <div className="h-2 bg-[#1a2638] rounded w-full mb-1" />
-          <div className="h-2 bg-[#1a2638] rounded w-2/3" />
+          <div className="h-3 bg-border rounded w-3/4 mb-2" />
+          <div className="h-2 bg-border rounded w-full mb-1" />
+          <div className="h-2 bg-border rounded w-2/3" />
         </div>
       ))}
     </div>

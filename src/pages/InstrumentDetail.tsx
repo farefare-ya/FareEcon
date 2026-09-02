@@ -36,18 +36,18 @@ export default function InstrumentDetail() {
       <div className="flex items-center gap-2 mb-5 text-xs">
         <button
           onClick={() => navigate("/")}
-          className="text-[#6b7a90] hover:text-[#d4dbe8] transition-colors"
+          className="text-muted-foreground hover:text-foreground transition-colors"
         >
           Dashboard
         </button>
-        <span className="text-[#1a2638]">/</span>
-        <span className="text-[#d4dbe8]">{meta.label}</span>
+        <span className="text-border">/</span>
+        <span className="text-foreground">{meta.label}</span>
       </div>
 
       <div className="flex items-start justify-between mb-6">
         <div>
-          <div className="text-[11px] text-[#6b7a90] mb-1">{meta.description}</div>
-          <h1 className="text-3xl font-semibold text-[#d4dbe8] tracking-tight">
+          <div className="text-[11px] text-muted-foreground mb-1">{meta.description}</div>
+          <h1 className="text-3xl font-semibold text-foreground tracking-tight">
             {meta.label}
           </h1>
         </div>
@@ -55,19 +55,19 @@ export default function InstrumentDetail() {
       </div>
 
       {anyError && (
-        <div className="border border-red-800/40 bg-red-950/30 p-4 mb-6 rounded">
-          <p className="text-xs text-red-400">Gagal memuat data: {anyError}</p>
+        <div className="border border-[var(--risk-high-border)] bg-[var(--risk-high-bg)] p-4 mb-6 rounded">
+          <p className="text-xs text-[var(--risk-high-text)]">Gagal memuat data: {anyError}</p>
         </div>
       )}
 
       {signal?.riskLevel === "high" && (
-        <div className="border border-red-800/50 bg-red-950/30 p-4 mb-6 flex items-start gap-3">
-          <div className="w-1 h-1 rounded-full bg-red-400 mt-1.5 shrink-0" />
+        <div className="border border-[var(--risk-high-border)] bg-[var(--risk-high-bg)] p-4 mb-6 flex items-start gap-3">
+          <div className="w-1 h-1 rounded-full bg-red-500 mt-1.5 shrink-0" />
           <div>
-            <p className="text-xs font-semibold text-red-400 mb-1">
+            <p className="text-xs font-semibold text-[var(--risk-high-text)] mb-1">
               Volatilitas tinggi terdeteksi
             </p>
-            <p className="text-xs text-red-300/70 leading-relaxed">
+            <p className="text-xs text-[var(--risk-high-text)] opacity-70 leading-relaxed">
               Beberapa berita berdampak besar terdeteksi dalam 7 hari terakhir untuk instrumen ini.
               Pantau pergerakan lebih seksama sebelum mengambil keputusan.
             </p>
@@ -76,7 +76,7 @@ export default function InstrumentDetail() {
       )}
 
       {signal && (
-        <div className="grid grid-cols-3 gap-px bg-[#1a2638] border border-[#1a2638] mb-6">
+        <div className="grid grid-cols-3 gap-px bg-border border border-border mb-6">
           <StatCell
             label="Avg. Sentimen 7d"
             value={(signal.avgSentiment7d >= 0 ? "+" : "") + signal.avgSentiment7d.toFixed(3)}
@@ -91,29 +91,29 @@ export default function InstrumentDetail() {
         </div>
       )}
       {sigLoading && !signal && (
-        <div className="grid grid-cols-3 gap-px bg-[#1a2638] border border-[#1a2638] mb-6">
+        <div className="grid grid-cols-3 gap-px bg-border border border-border mb-6">
           {Array.from({ length: 3 }).map((_, i) => (
-            <div key={i} className="bg-[#070b12] px-4 py-3 animate-pulse">
-              <div className="h-2 bg-[#1a2638] rounded w-1/2 mb-2" />
-              <div className="h-4 bg-[#1a2638] rounded w-1/3" />
+            <div key={i} className="bg-background px-4 py-3 animate-pulse">
+              <div className="h-2 bg-border rounded w-1/2 mb-2" />
+              <div className="h-4 bg-border rounded w-1/3" />
             </div>
           ))}
         </div>
       )}
 
-      <div className="border border-[#1a2638] bg-[#0c1220] mb-6">
-        <div className="border-b border-[#1a2638] px-4 py-2.5 flex items-center justify-between">
-          <span className="text-[11px] text-[#6b7a90] uppercase tracking-wide">
+      <div className="border border-border bg-card mb-6">
+        <div className="border-b border-border px-4 py-2.5 flex items-center justify-between">
+          <span className="text-[11px] text-muted-foreground uppercase tracking-wide">
             Harga Historis — Candlestick
           </span>
           {!priceLoading && candles.length > 0 && (
-            <span className="text-[11px] text-[#6b7a90]">{candles.length} candle</span>
+            <span className="text-[11px] text-muted-foreground">{candles.length} candle</span>
           )}
         </div>
         <div className="h-72">
           {priceLoading ? (
             <div className="h-full flex items-center justify-center">
-              <span className="text-xs text-[#6b7a90] animate-pulse">
+              <span className="text-xs text-muted-foreground animate-pulse">
                 Memuat data harga...
               </span>
             </div>
@@ -128,13 +128,13 @@ export default function InstrumentDetail() {
         </div>
       </div>
 
-      <div className="border border-[#1a2638]">
-        <div className="border-b border-[#1a2638] px-4 py-2.5 flex items-center justify-between">
-          <span className="text-[11px] text-[#6b7a90] uppercase tracking-wide">
+      <div className="border border-border">
+        <div className="border-b border-border px-4 py-2.5 flex items-center justify-between">
+          <span className="text-[11px] text-muted-foreground uppercase tracking-wide">
             Berita Terkait
           </span>
           {!newsLoading && (
-            <span className="text-[11px] text-[#6b7a90]">{news.length} artikel</span>
+            <span className="text-[11px] text-muted-foreground">{news.length} artikel</span>
           )}
         </div>
         {newsLoading ? (
@@ -145,7 +145,7 @@ export default function InstrumentDetail() {
             description="Berita untuk instrumen ini belum tersedia di Firestore."
           />
         ) : (
-          <div className="divide-y divide-[#1a2638] max-h-[600px] overflow-y-auto">
+          <div className="divide-y divide-border">
             {news.map((item) => (
               <NewsCard key={item.id} item={item} />
             ))}
@@ -167,13 +167,13 @@ function StatCell({
 }) {
   const valColor =
     highlight === "pos"
-      ? "text-emerald-400"
+      ? "text-[var(--risk-low-text)]"
       : highlight === "neg"
-      ? "text-red-400"
-      : "text-[#d4dbe8]";
+      ? "text-[var(--risk-high-text)]"
+      : "text-foreground";
   return (
-    <div className="bg-[#070b12] px-4 py-3 min-w-0">
-      <div className="text-[11px] text-[#6b7a90] uppercase tracking-wide mb-1 truncate">
+    <div className="bg-background px-4 py-3 min-w-0">
+      <div className="text-[11px] text-muted-foreground uppercase tracking-wide mb-1 truncate">
         {label}
       </div>
       <div className={`text-sm font-mono font-medium whitespace-nowrap ${valColor}`}>{value}</div>
@@ -183,16 +183,16 @@ function StatCell({
 
 function NewsLoadingSkeleton() {
   return (
-    <div className="divide-y divide-[#1a2638]">
+    <div className="divide-y divide-border">
       {Array.from({ length: 4 }).map((_, i) => (
         <div key={i} className="p-4 animate-pulse">
           <div className="flex gap-2 mb-2">
-            <div className="h-2 bg-[#1a2638] rounded w-16" />
-            <div className="h-2 bg-[#1a2638] rounded w-10" />
+            <div className="h-2 bg-border rounded w-16" />
+            <div className="h-2 bg-border rounded w-10" />
           </div>
-          <div className="h-3 bg-[#1a2638] rounded w-3/4 mb-2" />
-          <div className="h-2 bg-[#1a2638] rounded w-full mb-1" />
-          <div className="h-2 bg-[#1a2638] rounded w-2/3" />
+          <div className="h-3 bg-border rounded w-3/4 mb-2" />
+          <div className="h-2 bg-border rounded w-full mb-1" />
+          <div className="h-2 bg-border rounded w-2/3" />
         </div>
       ))}
     </div>

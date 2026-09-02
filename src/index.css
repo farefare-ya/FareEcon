@@ -40,35 +40,71 @@
   --muted-foreground: #6b7a90;
   --accent: #38bdf8;
   --accent-foreground: #070b12;
+  --accent-hover: #7dd3fc;
   --border: #1a2638;
+  --border-hover: #243450;
   --ring: #38bdf8;
   --radius: 4px;
 
-  --risk-low: #00c46e;
-  --risk-medium: #f5a623;
-  --risk-high: #ff4455;
-  --sentiment-pos: #00c46e;
-  --sentiment-neg: #ff4455;
+  --risk-low-bg: rgba(0, 196, 110, 0.12);
+  --risk-low-text: #00c46e;
+  --risk-low-border: rgba(0, 196, 110, 0.3);
+  --risk-medium-bg: rgba(245, 166, 35, 0.12);
+  --risk-medium-text: #f5a623;
+  --risk-medium-border: rgba(245, 166, 35, 0.3);
+  --risk-high-bg: rgba(255, 68, 85, 0.12);
+  --risk-high-text: #ff4455;
+  --risk-high-border: rgba(255, 68, 85, 0.3);
 
   --font-sans-val: 'DM Sans', system-ui, sans-serif;
   --font-mono-val: 'DM Mono', 'Fira Code', monospace;
 }
 
+.light {
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+  --primary: #0284c7;
+  --primary-foreground: #ffffff;
+  --secondary: #f1f5f9;
+  --secondary-foreground: #475569;
+  --muted: #eef2f6;
+  --muted-foreground: #64748b;
+  --accent: #0284c7;
+  --accent-foreground: #ffffff;
+  --accent-hover: #0369a1;
+  --border: #e2e8f0;
+  --border-hover: #cbd5e1;
+  --ring: #0284c7;
+
+  --risk-low-bg: rgba(4, 120, 87, 0.08);
+  --risk-low-text: #047857;
+  --risk-low-border: rgba(4, 120, 87, 0.25);
+  --risk-medium-bg: rgba(180, 83, 9, 0.08);
+  --risk-medium-text: #b45309;
+  --risk-medium-border: rgba(180, 83, 9, 0.25);
+  --risk-high-bg: rgba(190, 18, 60, 0.08);
+  --risk-high-text: #be123c;
+  --risk-high-border: rgba(190, 18, 60, 0.25);
+}
+
 * {
   scrollbar-width: thin;
-  scrollbar-color: #1a2638 transparent;
+  scrollbar-color: var(--border) transparent;
 }
 *::-webkit-scrollbar { width: 4px; height: 4px; }
 *::-webkit-scrollbar-track { background: transparent; }
-*::-webkit-scrollbar-thumb { background: #1a2638; border-radius: 2px; }
-*::-webkit-scrollbar-thumb:hover { background: #243450; }
+*::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+*::-webkit-scrollbar-thumb:hover { background: var(--border-hover); }
 
 html, body, #root {
   height: 100%;
-  background-color: #070b12;
-  color: #d4dbe8;
+  background-color: var(--background);
+  color: var(--foreground);
   font-family: 'DM Sans', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
+  transition: background-color 150ms ease, color 150ms ease;
 }
 
 .font-mono {

@@ -3,18 +3,18 @@ import type { RiskLevel } from "@/lib/types";
 const config: Record<RiskLevel, { label: string; classes: string; dot: string }> = {
   low: {
     label: "RENDAH",
-    classes: "bg-emerald-950/60 text-emerald-400 border-emerald-800/50",
-    dot: "bg-emerald-400",
+    classes: "bg-[var(--risk-low-bg)] text-[var(--risk-low-text)] border-[var(--risk-low-border)]",
+    dot: "bg-emerald-500",
   },
   medium: {
     label: "SEDANG",
-    classes: "bg-amber-950/60 text-amber-400 border-amber-800/50",
-    dot: "bg-amber-400",
+    classes: "bg-[var(--risk-medium-bg)] text-[var(--risk-medium-text)] border-[var(--risk-medium-border)]",
+    dot: "bg-amber-500",
   },
   high: {
     label: "TINGGI",
-    classes: "bg-red-950/60 text-red-400 border-red-800/50",
-    dot: "bg-red-400",
+    classes: "bg-[var(--risk-high-bg)] text-[var(--risk-high-text)] border-[var(--risk-high-border)]",
+    dot: "bg-red-500",
   },
 };
 

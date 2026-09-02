@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { NavLink, Outlet } from "react-router-dom";
-import { LayoutDashboard, Newspaper, Star } from "lucide-react";
+import { LayoutDashboard, Newspaper, Star, Sun, Moon } from "lucide-react";
+import { useTheme } from "@/lib/theme";
 
 const navItems = [
   { to: "/", label: "Dashboard", icon: LayoutDashboard },
@@ -10,21 +11,25 @@ const navItems = [
 
 export default function Layout() {
   return (
-    <div className="min-h-screen bg-[#070b12] flex flex-col md:flex-row">
+    <div className="min-h-screen bg-background flex flex-col md:flex-row">
       {/* Top bar — cuma tampil di mobile/tablet (di bawah breakpoint md) */}
-      <div className="md:hidden h-14 shrink-0 flex items-center justify-between px-4 border-b border-[#1a2638] sticky top-0 bg-[#070b12] z-20">
-        <span className="text-[#d4dbe8] font-semibold text-base tracking-tight">
+      <div className="md:hidden h-14 shrink-0 flex items-center justify-between px-4 border-b border-border sticky top-0 bg-background z-20">
+        <span className="text-foreground font-semibold text-base tracking-tight">
           FareEcon
         </span>
-        <ClockDisplay compact />
+        <div className="flex items-center gap-3">
+          <ClockDisplay compact />
+          <ThemeToggle />
+        </div>
       </div>
 
       {/* Sidebar — cuma tampil di desktop (md ke atas) */}
-      <aside className="hidden md:flex w-56 shrink-0 border-r border-[#1a2638] flex-col sticky top-0 h-screen overflow-y-auto">
-        <div className="h-16 flex items-center px-5 border-b border-[#1a2638]">
-          <span className="text-[#d4dbe8] font-semibold text-base tracking-tight">
+      <aside className="hidden md:flex w-56 shrink-0 border-r border-border flex-col sticky top-0 h-screen overflow-y-auto">
+        <div className="h-16 flex items-center justify-between px-5 border-b border-border">
+          <span className="text-foreground font-semibold text-base tracking-tight">
             FareEcon
           </span>
+          <ThemeToggle />
         </div>
 
         <nav className="flex-1 py-3 px-2 flex flex-col gap-0.5">
@@ -36,8 +41,8 @@ export default function Layout() {
               className={({ isActive }) =>
                 `px-3 py-2 text-xs rounded transition-colors duration-150 ${
                   isActive
-                    ? "text-[#38bdf8] bg-[#38bdf8]/10 font-medium"
-                    : "text-[#6b7a90] hover:text-[#d4dbe8] hover:bg-[#1a2638]/50"
+                    ? "text-accent bg-accent/10 font-medium"
+                    : "text-muted-foreground hover:text-foreground hover:bg-border/50"
                 }`
               }
             >
@@ -46,7 +51,7 @@ export default function Layout() {
           ))}
         </nav>
 
-        <div className="px-4 py-3 border-t border-[#1a2638]">
+        <div className="px-4 py-3 border-t border-border">
           <ClockDisplay />
         </div>
       </aside>
@@ -60,7 +65,7 @@ export default function Layout() {
       </main>
 
       {/* Bottom tab bar — cuma tampil di mobile/tablet */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 h-16 border-t border-[#1a2638] bg-[#070b12] flex items-stretch z-20">
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 h-16 border-t border-border bg-background flex items-stretch z-20">
         {navItems.map((item) => {
           const Icon = item.icon;
           return (
@@ -70,7 +75,7 @@ export default function Layout() {
               end={item.to === "/"}
               className={({ isActive }) =>
                 `flex-1 flex flex-col items-center justify-center gap-1 text-[11px] transition-colors duration-150 ${
-                  isActive ? "text-[#38bdf8]" : "text-[#6b7a90]"
+                  isActive ? "text-accent" : "text-muted-foreground"
                 }`
               }
             >
@@ -81,6 +86,21 @@ export default function Layout() {
         })}
       </nav>
     </div>
+  );
+}
+
+// Tombol ganti tema gelap/terang — preferensi disimpan otomatis (localStorage),
+// jadi gak perlu dipilih ulang tiap buka app lagi.
+function ThemeToggle() {
+  const { theme, toggleTheme } = useTheme();
+  return (
+    <button
+      onClick={toggleTheme}
+      aria-label={theme === "dark" ? "Ganti ke tema terang" : "Ganti ke tema gelap"}
+      className="w-8 h-8 flex items-center justify-center rounded text-muted-foreground hover:text-foreground hover:bg-border/50 transition-colors duration-150"
+    >
+      {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
+    </button>
   );
 }
 
@@ -108,13 +128,13 @@ function ClockDisplay({ compact = false }: { compact?: boolean }) {
   });
 
   if (compact) {
-    return <div className="text-xs text-[#6b7a90] font-medium">{time}</div>;
+    return <div className="text-xs text-muted-foreground font-medium">{time}</div>;
   }
 
   return (
     <div>
-      <div className="text-xs text-[#d4dbe8] font-medium">{time}</div>
-      <div className="text-[11px] text-[#6b7a90] mt-0.5">{date} WIB</div>
+      <div className="text-xs text-foreground font-medium">{time}</div>
+      <div className="text-[11px] text-muted-foreground mt-0.5">{date} WIB</div>
     </div>
   );
 }

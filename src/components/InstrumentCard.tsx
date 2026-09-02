@@ -14,24 +14,24 @@ export default function InstrumentCard({ signal }: { signal: Signal }) {
   const meta = INSTRUMENTS.find((i) => i.id === signal.instrument);
   const bar = riskBar[signal.riskLevel];
   const isPos = signal.direction === "positive";
-  const sentColor = isPos ? "text-emerald-400" : "text-red-400";
+  const sentColor = isPos ? "text-[var(--risk-low-text)]" : "text-[var(--risk-high-text)]";
   const sentLabel = isPos ? "Positif" : "Negatif";
 
   return (
     <button
       onClick={() => navigate(`/instrument/${signal.instrument}`)}
-      className="w-full text-left border border-[#1a2638] bg-[#0c1220] hover:border-[#243450] hover:bg-[#0f1a2c] transition-all duration-150 p-6 group cursor-pointer relative overflow-hidden"
+      className="w-full text-left border border-border bg-card hover:border-[var(--border-hover)] hover:bg-muted transition-all duration-150 p-6 group cursor-pointer relative overflow-hidden"
     >
-      <div className="absolute top-0 left-0 right-0 h-0.5 bg-[#1a2638]">
+      <div className="absolute top-0 left-0 right-0 h-0.5 bg-border">
         <div className={`h-full ${bar.width} ${bar.color} transition-all`} />
       </div>
 
       <div className="flex items-start justify-between gap-3 mb-5">
         <div className="min-w-0">
-          <div className="text-xs text-[#6b7a90] mb-1 truncate">
+          <div className="text-xs text-muted-foreground mb-1 truncate">
             {meta?.description ?? signal.instrument}
           </div>
-          <div className="text-2xl font-semibold text-[#d4dbe8] tracking-tight">
+          <div className="text-2xl font-semibold text-foreground tracking-tight">
             {meta?.label ?? signal.instrument}
           </div>
         </div>
@@ -42,7 +42,7 @@ export default function InstrumentCard({ signal }: { signal: Signal }) {
 
       <div className="grid grid-cols-3 gap-4">
         <div className="min-w-0">
-          <div className="text-[11px] text-[#6b7a90] uppercase tracking-wide mb-1.5 whitespace-nowrap">
+          <div className="text-[11px] text-muted-foreground uppercase tracking-wide mb-1.5 whitespace-nowrap">
             Sentimen 7D
           </div>
           <div className={`text-sm font-semibold whitespace-nowrap ${sentColor}`}>
@@ -50,7 +50,7 @@ export default function InstrumentCard({ signal }: { signal: Signal }) {
           </div>
         </div>
         <div className="min-w-0">
-          <div className="text-[11px] text-[#6b7a90] uppercase tracking-wide mb-1.5 whitespace-nowrap">
+          <div className="text-[11px] text-muted-foreground uppercase tracking-wide mb-1.5 whitespace-nowrap">
             Avg. Skor
           </div>
           <div className={`text-sm font-mono font-medium whitespace-nowrap ${sentColor}`}>
@@ -59,20 +59,20 @@ export default function InstrumentCard({ signal }: { signal: Signal }) {
           </div>
         </div>
         <div className="min-w-0">
-          <div className="text-[11px] text-[#6b7a90] uppercase tracking-wide mb-1.5 whitespace-nowrap">
+          <div className="text-[11px] text-muted-foreground uppercase tracking-wide mb-1.5 whitespace-nowrap">
             Berita 7D
           </div>
-          <div className="text-sm font-mono font-medium text-[#d4dbe8] whitespace-nowrap">
+          <div className="text-sm font-mono font-medium text-foreground whitespace-nowrap">
             {signal.newsCount7d}
           </div>
         </div>
       </div>
 
-      <div className="flex items-center justify-between gap-3 mt-5 pt-4 border-t border-[#1a2638]">
-        <span className="text-xs text-[#6b7a90] whitespace-nowrap">
+      <div className="flex items-center justify-between gap-3 mt-5 pt-4 border-t border-border">
+        <span className="text-xs text-muted-foreground whitespace-nowrap">
           Diperbarui {formatTime(signal.updatedAt)}
         </span>
-        <span className="text-xs font-medium text-[#38bdf8] group-hover:text-[#7dd3fc] transition-colors whitespace-nowrap">
+        <span className="text-xs font-medium text-accent group-hover:text-[var(--accent-hover)] transition-colors whitespace-nowrap">
           Lihat detail →
         </span>
       </div>
