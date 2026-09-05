@@ -1,13 +1,16 @@
 import { useState } from "react";
 import type { Category, InstrumentId } from "@/lib/types";
-import { CATEGORIES, INSTRUMENTS } from "@/lib/types";
 import { useNews } from "@/hooks/useNews";
+import { useLanguage, useInstrumentsList, useCategoriesList } from "@/lib/language";
 import NewsCard from "@/components/NewsCard";
 import EmptyState from "@/components/EmptyState";
 
 export default function NewsFeed() {
   const [activeInstrument, setActiveInstrument] = useState<InstrumentId | undefined>();
   const [activeCategory, setActiveCategory] = useState<Category | undefined>();
+  const { t } = useLanguage();
+  const instruments = useInstrumentsList();
+  const categories = useCategoriesList();
 
   const { news, loading, error } = useNews({ instrument: activeInstrument, maxItems: 80 });
 
@@ -19,24 +22,24 @@ export default function NewsFeed() {
     <div>
       <div className="mb-6">
         <h1 className="text-sm font-semibold text-foreground tracking-wide uppercase mb-0.5">
-          Feed Berita
+          {t.newsFeed.title}
         </h1>
         <p className="text-xs text-muted-foreground">
-          Berita ekonomi global lintas instrumen, urut terbaru
+          {t.newsFeed.subtitle}
         </p>
       </div>
 
       <div className="flex flex-col gap-3 mb-5">
         <div className="flex items-center gap-2 flex-wrap">
           <span className="text-[11px] text-muted-foreground uppercase tracking-wide w-20 shrink-0">
-            Instrumen
+            {t.newsFeed.instrument}
           </span>
           <FilterPill
-            label="Semua"
+            label={t.newsFeed.all}
             active={!activeInstrument}
             onClick={() => setActiveInstrument(undefined)}
           />
-          {INSTRUMENTS.map((inst) => (
+          {instruments.map((inst) => (
             <FilterPill
               key={inst.id}
               label={inst.label}
@@ -50,14 +53,14 @@ export default function NewsFeed() {
 
         <div className="flex items-center gap-2 flex-wrap">
           <span className="text-[11px] text-muted-foreground uppercase tracking-wide w-20 shrink-0">
-            Kategori
+            {t.newsFeed.category}
           </span>
           <FilterPill
-            label="Semua"
+            label={t.newsFeed.all}
             active={!activeCategory}
             onClick={() => setActiveCategory(undefined)}
           />
-          {CATEGORIES.map((cat) => (
+          {categories.map((cat) => (
             <FilterPill
               key={cat.id}
               label={cat.label}
@@ -72,12 +75,12 @@ export default function NewsFeed() {
 
       {error && (
         <div className="border border-[var(--risk-high-border)] bg-[var(--risk-high-bg)] p-4 mb-4 rounded">
-          <p className="text-xs text-[var(--risk-high-text)]">Gagal memuat data: {error}</p>
+          <p className="text-xs text-[var(--risk-high-text)]">{t.newsFeed.error(error)}</p>
         </div>
       )}
 
       {!loading && filtered.length > 0 && (
-        <div className="text-[11px] text-muted-foreground mb-3">{filtered.length} artikel ditemukan</div>
+        <div className="text-[11px] text-muted-foreground mb-3">{t.newsFeed.articlesFound(filtered.length)}</div>
       )}
 
       <div className="border border-border">
@@ -85,8 +88,8 @@ export default function NewsFeed() {
           <NewsLoadingSkeleton />
         ) : filtered.length === 0 ? (
           <EmptyState
-            title="Tidak ada berita"
-            description="Belum ada berita yang cocok dengan filter ini, atau Firestore belum memiliki data."
+            title={t.newsFeed.emptyTitle}
+            description={t.newsFeed.emptyDesc}
           />
         ) : (
           <div className="divide-y divide-border">

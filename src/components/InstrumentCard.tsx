@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import type { Signal } from "@/lib/types";
-import { INSTRUMENTS } from "@/lib/types";
+import { useLanguage, useInstrumentMeta } from "@/lib/language";
 import RiskBadge from "./RiskBadge";
 
 const riskBar: Record<string, { width: string; color: string }> = {
@@ -11,11 +11,12 @@ const riskBar: Record<string, { width: string; color: string }> = {
 
 export default function InstrumentCard({ signal }: { signal: Signal }) {
   const navigate = useNavigate();
-  const meta = INSTRUMENTS.find((i) => i.id === signal.instrument);
+  const { t, lang } = useLanguage();
+  const meta = useInstrumentMeta(signal.instrument);
   const bar = riskBar[signal.riskLevel];
   const isPos = signal.direction === "positive";
   const sentColor = isPos ? "text-[var(--risk-low-text)]" : "text-[var(--risk-high-text)]";
-  const sentLabel = isPos ? "Positif" : "Negatif";
+  const sentLabel = isPos ? t.instrumentCard.positive : t.instrumentCard.negative;
 
   return (
     <button
@@ -43,7 +44,7 @@ export default function InstrumentCard({ signal }: { signal: Signal }) {
       <div className="grid grid-cols-3 gap-4">
         <div className="min-w-0">
           <div className="text-[11px] text-muted-foreground uppercase tracking-wide mb-1.5 whitespace-nowrap">
-            Sentimen 7D
+            {t.instrumentCard.sentiment7d}
           </div>
           <div className={`text-sm font-semibold whitespace-nowrap ${sentColor}`}>
             {sentLabel}
@@ -51,7 +52,7 @@ export default function InstrumentCard({ signal }: { signal: Signal }) {
         </div>
         <div className="min-w-0">
           <div className="text-[11px] text-muted-foreground uppercase tracking-wide mb-1.5 whitespace-nowrap">
-            Avg. Skor
+            {t.instrumentCard.avgScore}
           </div>
           <div className={`text-sm font-mono font-medium whitespace-nowrap ${sentColor}`}>
             {signal.avgSentiment7d >= 0 ? "+" : ""}
@@ -60,7 +61,7 @@ export default function InstrumentCard({ signal }: { signal: Signal }) {
         </div>
         <div className="min-w-0">
           <div className="text-[11px] text-muted-foreground uppercase tracking-wide mb-1.5 whitespace-nowrap">
-            Berita 7D
+            {t.instrumentCard.news7d}
           </div>
           <div className="text-sm font-mono font-medium text-foreground whitespace-nowrap">
             {signal.newsCount7d}
@@ -70,21 +71,22 @@ export default function InstrumentCard({ signal }: { signal: Signal }) {
 
       <div className="flex items-center justify-between gap-3 mt-5 pt-4 border-t border-border">
         <span className="text-xs text-muted-foreground whitespace-nowrap">
-          Diperbarui {formatTime(signal.updatedAt)}
+          {t.instrumentCard.updated(formatTime(signal.updatedAt, lang))}
         </span>
         <span className="text-xs font-medium text-accent group-hover:text-[var(--accent-hover)] transition-colors whitespace-nowrap">
-          Lihat detail →
+          {t.instrumentCard.viewDetail}
         </span>
       </div>
     </button>
   );
 }
 
-function formatTime(d: Date): string {
+function formatTime(d: Date, lang: "id" | "en"): string {
   const diff = Date.now() - d.getTime();
   const mins = Math.floor(diff / 60000);
-  if (mins < 60) return `${mins}m lalu`;
+  const locale = lang === "id" ? "id-ID" : "en-US";
+  if (mins < 60) return lang === "id" ? `${mins}m lalu` : `${mins}m ago`;
   const hrs = Math.floor(mins / 60);
-  if (hrs < 24) return `${hrs}j lalu`;
-  return d.toLocaleDateString("id-ID", { day: "numeric", month: "short" });
+  if (hrs < 24) return lang === "id" ? `${hrs}j lalu` : `${hrs}h ago`;
+  return d.toLocaleDateString(locale, { day: "numeric", month: "short" });
 }

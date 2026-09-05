@@ -1,7 +1,8 @@
 import { useSignals } from "@/hooks/useSignals";
 import { useNews } from "@/hooks/useNews";
 import { useWatchlist } from "@/hooks/useWatchlist";
-import { INSTRUMENTS } from "@/lib/types";
+import { INSTRUMENT_IDS } from "@/lib/types";
+import { useLanguage } from "@/lib/language";
 import InstrumentCard from "@/components/InstrumentCard";
 import NewsCard from "@/components/NewsCard";
 import EmptyState from "@/components/EmptyState";
@@ -15,10 +16,11 @@ const VITAL_CATEGORIES = ["monetary_policy", "geopolitics", "corporate"];
 export default function Dashboard() {
   const { signals, loading, error } = useSignals();
   const { watchlist } = useWatchlist();
+  const { t, lang } = useLanguage();
 
-  const watchedSignals = INSTRUMENTS.filter((i) => watchlist.includes(i.id))
-    .map((i) => signals.find((s) => s.instrument === i.id))
-    .filter(Boolean) as ReturnType<typeof useSignals>["signals"];
+  const watchedSignals = INSTRUMENT_IDS.filter((id) => watchlist.includes(id))
+    .map((id) => signals.find((s) => s.instrument === id))
+    .filter((s): s is NonNullable<typeof s> => Boolean(s));
 
   const highRiskCount = watchedSignals.filter((s) => s.riskLevel === "high").length;
 
@@ -28,21 +30,21 @@ export default function Dashboard() {
     .sort((a, b) => Math.abs(b.sentiment) - Math.abs(a.sentiment))
     .slice(0, 4);
 
+  const todayLabel = new Date().toLocaleDateString(lang === "id" ? "id-ID" : "en-US", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+
   return (
     <div>
       <div className="flex items-start justify-between mb-6">
         <div>
           <h1 className="text-sm font-semibold text-foreground tracking-wide uppercase">
-            Market Dashboard
+            {t.dashboard.title}
           </h1>
-          <p className="text-xs text-muted-foreground mt-0.5">
-            {new Date().toLocaleDateString("id-ID", {
-              weekday: "long",
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            })}
-          </p>
+          <p className="text-xs text-muted-foreground mt-0.5">{todayLabel}</p>
         </div>
         {highRiskCount > 0 && (
           <div className="flex items-center gap-2 px-3 py-1.5 bg-[var(--risk-high-bg)] border border-[var(--risk-high-border)] rounded text-xs text-[var(--risk-high-text)]">
@@ -50,7 +52,7 @@ export default function Dashboard() {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75" />
               <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-red-500" />
             </span>
-            {highRiskCount} instrumen risiko tinggi
+            {t.dashboard.highRisk(highRiskCount)}
           </div>
         )}
       </div>
@@ -58,7 +60,11 @@ export default function Dashboard() {
       <div className="grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-px bg-border border border-border mb-6 text-xs">
         {(["low", "medium", "high"] as const).map((level) => {
           const count = watchedSignals.filter((s) => s.riskLevel === level).length;
-          const labelMap = { low: "Rendah", medium: "Sedang", high: "Tinggi" };
+          const labelMap = {
+            low: t.dashboard.riskLow,
+            medium: t.dashboard.riskMedium,
+            high: t.dashboard.riskHigh,
+          };
           const colorMap = {
             low: "text-[var(--risk-low-text)]",
             medium: "text-[var(--risk-medium-text)]",
@@ -66,32 +72,27 @@ export default function Dashboard() {
           };
           return (
             <div key={level} className="bg-background px-5 py-3.5 flex items-center gap-3 whitespace-nowrap">
-              <span className="text-muted-foreground uppercase tracking-wide">Risiko {labelMap[level]}</span>
+              <span className="text-muted-foreground uppercase tracking-wide">{labelMap[level]}</span>
               <span className={`font-semibold ${colorMap[level]}`}>{count}</span>
             </div>
           );
         })}
         <div className="bg-background px-5 py-3.5 flex items-center gap-3 whitespace-nowrap">
-          <span className="text-muted-foreground uppercase tracking-wide">Dipantau</span>
+          <span className="text-muted-foreground uppercase tracking-wide">{t.dashboard.watched}</span>
           <span className="font-semibold text-accent">{watchedSignals.length}</span>
         </div>
       </div>
 
       {error && (
         <div className="border border-[var(--risk-high-border)] bg-[var(--risk-high-bg)] p-4 rounded mb-6">
-          <p className="text-xs text-[var(--risk-high-text)]">
-            Gagal terhubung ke Firestore: {error}. Pastikan konfigurasi Firebase sudah benar.
-          </p>
+          <p className="text-xs text-[var(--risk-high-text)]">{t.dashboard.firestoreError(error)}</p>
         </div>
       )}
 
       {loading ? (
         <LoadingSkeleton />
       ) : watchedSignals.length === 0 ? (
-        <EmptyState
-          title="Belum ada sinyal pasar"
-          description="Belum ada data di Firestore. Tunggu sinkronisasi pertama dari job crawler."
-        />
+        <EmptyState title={t.dashboard.emptyTitle} description={t.dashboard.emptyDesc} />
       ) : (
         <div className="grid grid-cols-[repeat(auto-fit,minmax(380px,1fr))] gap-5">
           {watchedSignals.map((signal) => (
@@ -104,10 +105,10 @@ export default function Dashboard() {
         <div className="mt-8">
           <div className="flex items-baseline justify-between mb-3">
             <h2 className="text-xs font-semibold text-foreground uppercase tracking-wide">
-              Sorotan Utama
+              {t.dashboard.highlights}
             </h2>
             <span className="text-[11px] text-muted-foreground">
-              Kebijakan moneter, geopolitik &amp; korporasi berdampak besar
+              {t.dashboard.highlightsSubtitle}
             </span>
           </div>
           <div className="grid grid-cols-[repeat(auto-fit,minmax(380px,1fr))] gap-3">
@@ -121,9 +122,8 @@ export default function Dashboard() {
       <div className="mt-8 border border-border bg-card p-4 flex items-start gap-3">
         <div className="w-1 h-1 rounded-full bg-accent mt-1.5 shrink-0" />
         <p className="text-xs text-muted-foreground leading-relaxed">
-          Skor sentimen dihitung dari berita 7 hari terakhir menggunakan NLP. Level risiko
-          mencerminkan volatilitas relatif berdasarkan volume dan dampak berita.{" "}
-          <span className="text-foreground">Ini bukan saran investasi.</span>
+          {t.dashboard.disclaimer}{" "}
+          <span className="text-foreground">{t.dashboard.disclaimerBold}</span>
         </p>
       </div>
     </div>

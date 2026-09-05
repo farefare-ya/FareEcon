@@ -1,19 +1,20 @@
 import type { NewsItem } from "@/lib/types";
-import { CATEGORIES } from "@/lib/types";
+import { useLanguage, useCategoryLabel } from "@/lib/language";
 import SentimentBadge from "./SentimentBadge";
 
-function timeAgo(date: Date): string {
+function timeAgo(date: Date, t: ReturnType<typeof useLanguage>["t"]): string {
   const diff = Date.now() - date.getTime();
   const mins = Math.floor(diff / 60000);
-  if (mins < 60) return `${mins} menit lalu`;
+  if (mins < 60) return t.timeAgo.minutes(mins);
   const hrs = Math.floor(mins / 60);
-  if (hrs < 24) return `${hrs} jam lalu`;
+  if (hrs < 24) return t.timeAgo.hours(hrs);
   const days = Math.floor(hrs / 24);
-  return `${days} hari lalu`;
+  return t.timeAgo.days(days);
 }
 
 export default function NewsCard({ item }: { item: NewsItem }) {
-  const catLabel = CATEGORIES.find((c) => c.id === item.category)?.label ?? item.category;
+  const { t } = useLanguage();
+  const catLabel = useCategoryLabel(item.category);
   return (
     <a
       href={item.url}
@@ -25,7 +26,7 @@ export default function NewsCard({ item }: { item: NewsItem }) {
         <div className="flex items-center gap-2 flex-wrap">
           <span className="text-[11px] text-muted-foreground">{item.source}</span>
           <span className="text-border">·</span>
-          <span className="text-[11px] text-muted-foreground">{timeAgo(item.publishedAt)}</span>
+          <span className="text-[11px] text-muted-foreground">{timeAgo(item.publishedAt, t)}</span>
           <span className="text-[11px] text-accent/60 border border-accent/20 px-1.5 py-0.5 rounded">
             {catLabel}
           </span>

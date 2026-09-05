@@ -42,19 +42,17 @@ export interface PriceCandle {
   approximate?: boolean; // true = cuma 1 nilai/hari (rate resmi), bukan OHLC bursa asli
 }
 
-export const INSTRUMENTS: { id: InstrumentId; label: string; description: string }[] = [
-  { id: "USDIDR", label: "USD/IDR", description: "Nilai tukar Dolar AS terhadap Rupiah" },
-  { id: "IHSG", label: "IHSG", description: "Indeks Harga Saham Gabungan" },
-  { id: "BTC", label: "Bitcoin", description: "Bitcoin / USD" },
-  { id: "GOLD", label: "Emas", description: "Gold Spot / USD" },
-];
+// Cuma daftar ID di sini — label & deskripsi diambil dari dictionary bahasa
+// (src/lib/i18n.ts) lewat hook useInstrumentsList()/useCategoriesList() di
+// src/lib/language.tsx, supaya otomatis ikut berubah saat bahasa di-toggle.
+export const INSTRUMENT_IDS: InstrumentId[] = ["USDIDR", "IHSG", "BTC", "GOLD"];
 
-export const CATEGORIES: { id: Category; label: string }[] = [
-  { id: "monetary_policy", label: "Kebijakan Moneter" },
-  { id: "geopolitics", label: "Geopolitik" },
-  { id: "commodities", label: "Komoditas" },
-  { id: "trade", label: "Perdagangan" },
-  { id: "corporate", label: "Korporasi" },
-  { id: "macro_data", label: "Data Makro" },
-  { id: "other", label: "Lainnya" },
+export const CATEGORY_IDS: Category[] = [
+  "monetary_policy",
+  "geopolitics",
+  "commodities",
+  "trade",
+  "corporate",
+  "macro_data",
+  "other",
 ];

@@ -1,15 +1,17 @@
 import { useEffect, useState } from "react";
 import { NavLink, Outlet } from "react-router-dom";
-import { LayoutDashboard, Newspaper, Star, Sun, Moon } from "lucide-react";
+import { LayoutDashboard, Newspaper, Star, Sun, Moon, Languages } from "lucide-react";
 import { useTheme } from "@/lib/theme";
-
-const navItems = [
-  { to: "/", label: "Dashboard", icon: LayoutDashboard },
-  { to: "/news", label: "Feed Berita", icon: Newspaper },
-  { to: "/watchlist", label: "Watchlist", icon: Star },
-];
+import { useLanguage } from "@/lib/language";
 
 export default function Layout() {
+  const { t } = useLanguage();
+  const navItems = [
+    { to: "/", label: t.nav.dashboard, icon: LayoutDashboard },
+    { to: "/news", label: t.nav.newsFeed, icon: Newspaper },
+    { to: "/watchlist", label: t.nav.watchlist, icon: Star },
+  ];
+
   return (
     <div className="min-h-screen bg-background flex flex-col md:flex-row">
       {/* Top bar — cuma tampil di mobile/tablet (di bawah breakpoint md) */}
@@ -17,8 +19,9 @@ export default function Layout() {
         <span className="text-foreground font-semibold text-base tracking-tight">
           FareEcon
         </span>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-1">
           <ClockDisplay compact />
+          <LanguageToggle />
           <ThemeToggle />
         </div>
       </div>
@@ -29,7 +32,10 @@ export default function Layout() {
           <span className="text-foreground font-semibold text-base tracking-tight">
             FareEcon
           </span>
-          <ThemeToggle />
+          <div className="flex items-center gap-0.5">
+            <LanguageToggle />
+            <ThemeToggle />
+          </div>
         </div>
 
         <nav className="flex-1 py-3 px-2 flex flex-col gap-0.5">
@@ -93,13 +99,30 @@ export default function Layout() {
 // jadi gak perlu dipilih ulang tiap buka app lagi.
 function ThemeToggle() {
   const { theme, toggleTheme } = useTheme();
+  const { t } = useLanguage();
   return (
     <button
       onClick={toggleTheme}
-      aria-label={theme === "dark" ? "Ganti ke tema terang" : "Ganti ke tema gelap"}
+      aria-label={theme === "dark" ? t.theme.toLight : t.theme.toDark}
       className="w-8 h-8 flex items-center justify-center rounded text-muted-foreground hover:text-foreground hover:bg-border/50 transition-colors duration-150"
     >
       {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
+    </button>
+  );
+}
+
+// Tombol ganti bahasa UI (ID/EN) — cuma teks antarmuka, bukan konten berita
+// (yang tetap Bahasa Indonesia karena memang dihasilkan AI dalam bahasa itu).
+function LanguageToggle() {
+  const { toggleLang, t } = useLanguage();
+  return (
+    <button
+      onClick={toggleLang}
+      aria-label={t.lang.switch}
+      title={t.lang.switch}
+      className="w-8 h-8 flex items-center justify-center gap-0.5 rounded text-muted-foreground hover:text-foreground hover:bg-border/50 transition-colors duration-150"
+    >
+      <Languages size={16} />
     </button>
   );
 }
@@ -110,18 +133,20 @@ function ThemeToggle() {
 // yang jelas dan jujur ke user, sekaligus jadi elemen yang terasa hidup.
 function ClockDisplay({ compact = false }: { compact?: boolean }) {
   const [now, setNow] = useState(new Date());
+  const { lang } = useLanguage();
+  const locale = lang === "id" ? "id-ID" : "en-US";
 
   useEffect(() => {
     const id = setInterval(() => setNow(new Date()), 1000);
     return () => clearInterval(id);
   }, []);
 
-  const date = now.toLocaleDateString("id-ID", {
+  const date = now.toLocaleDateString(locale, {
     weekday: "short",
     day: "numeric",
     month: "short",
   });
-  const time = now.toLocaleTimeString("id-ID", {
+  const time = now.toLocaleTimeString(locale, {
     hour: "2-digit",
     minute: "2-digit",
     second: compact ? undefined : "2-digit",

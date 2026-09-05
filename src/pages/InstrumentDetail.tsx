@@ -1,9 +1,9 @@
 import { useParams, useNavigate } from "react-router-dom";
 import type { InstrumentId } from "@/lib/types";
-import { INSTRUMENTS } from "@/lib/types";
 import { useSignals } from "@/hooks/useSignals";
 import { useNews } from "@/hooks/useNews";
 import { usePrices } from "@/hooks/usePrices";
+import { useLanguage, useInstrumentMeta } from "@/lib/language";
 import RiskBadge from "@/components/RiskBadge";
 import NewsCard from "@/components/NewsCard";
 import EmptyState from "@/components/EmptyState";
@@ -13,7 +13,8 @@ export default function InstrumentDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const instrument = id as InstrumentId;
-  const meta = INSTRUMENTS.find((i) => i.id === instrument);
+  const { t } = useLanguage();
+  const meta = useInstrumentMeta(instrument);
 
   const { getSignal, loading: sigLoading, error: sigError } = useSignals();
   const { news, loading: newsLoading, error: newsError } = useNews({ instrument, maxItems: 30 });
@@ -25,8 +26,8 @@ export default function InstrumentDetail() {
   if (!meta) {
     return (
       <EmptyState
-        title="Instrumen tidak ditemukan"
-        description={`Instrumen "${id}" tidak dikenali.`}
+        title={t.instrumentDetail.notFoundTitle}
+        description={t.instrumentDetail.notFoundDesc(id ?? "")}
       />
     );
   }
@@ -38,7 +39,7 @@ export default function InstrumentDetail() {
           onClick={() => navigate("/")}
           className="text-muted-foreground hover:text-foreground transition-colors"
         >
-          Dashboard
+          {t.nav.dashboard}
         </button>
         <span className="text-border">/</span>
         <span className="text-foreground">{meta.label}</span>
@@ -56,7 +57,7 @@ export default function InstrumentDetail() {
 
       {anyError && (
         <div className="border border-[var(--risk-high-border)] bg-[var(--risk-high-bg)] p-4 mb-6 rounded">
-          <p className="text-xs text-[var(--risk-high-text)]">Gagal memuat data: {anyError}</p>
+          <p className="text-xs text-[var(--risk-high-text)]">{t.instrumentDetail.error(anyError)}</p>
         </div>
       )}
 
@@ -65,11 +66,10 @@ export default function InstrumentDetail() {
           <div className="w-1 h-1 rounded-full bg-red-500 mt-1.5 shrink-0" />
           <div>
             <p className="text-xs font-semibold text-[var(--risk-high-text)] mb-1">
-              Volatilitas tinggi terdeteksi
+              {t.instrumentDetail.highVolatility}
             </p>
             <p className="text-xs text-[var(--risk-high-text)] opacity-70 leading-relaxed">
-              Beberapa berita berdampak besar terdeteksi dalam 7 hari terakhir untuk instrumen ini.
-              Pantau pergerakan lebih seksama sebelum mengambil keputusan.
+              {t.instrumentDetail.highVolatilityDesc}
             </p>
           </div>
         </div>
@@ -78,14 +78,14 @@ export default function InstrumentDetail() {
       {signal && (
         <div className="grid grid-cols-3 gap-px bg-border border border-border mb-6">
           <StatCell
-            label="Avg. Sentimen 7d"
+            label={t.instrumentDetail.avgSentiment7d}
             value={(signal.avgSentiment7d >= 0 ? "+" : "") + signal.avgSentiment7d.toFixed(3)}
             highlight={signal.avgSentiment7d >= 0 ? "pos" : "neg"}
           />
-          <StatCell label="Jumlah Berita 7d" value={String(signal.newsCount7d)} />
+          <StatCell label={t.instrumentDetail.newsCount7d} value={String(signal.newsCount7d)} />
           <StatCell
-            label="Arah Sentimen"
-            value={signal.direction === "positive" ? "Positif" : "Negatif"}
+            label={t.instrumentDetail.direction}
+            value={signal.direction === "positive" ? t.instrumentCard.positive : t.instrumentCard.negative}
             highlight={signal.direction === "positive" ? "pos" : "neg"}
           />
         </div>
@@ -104,23 +104,23 @@ export default function InstrumentDetail() {
       <div className="border border-border bg-card mb-6">
         <div className="border-b border-border px-4 py-2.5 flex items-center justify-between">
           <span className="text-[11px] text-muted-foreground uppercase tracking-wide">
-            Harga Historis — Candlestick
+            {t.instrumentDetail.priceHistory}
           </span>
           {!priceLoading && candles.length > 0 && (
-            <span className="text-[11px] text-muted-foreground">{candles.length} candle</span>
+            <span className="text-[11px] text-muted-foreground">{t.instrumentDetail.candleCount(candles.length)}</span>
           )}
         </div>
         <div className="h-72">
           {priceLoading ? (
             <div className="h-full flex items-center justify-center">
               <span className="text-xs text-muted-foreground animate-pulse">
-                Memuat data harga...
+                {t.instrumentDetail.loadingPrice}
               </span>
             </div>
           ) : candles.length === 0 ? (
             <EmptyState
-              title="Data harga belum tersedia"
-              description="Data candlestick belum ada di Firestore. Akan muncul otomatis setelah price job pertama selesai."
+              title={t.instrumentDetail.noPriceTitle}
+              description={t.instrumentDetail.noPriceDesc}
             />
           ) : (
             <CandlestickChart candles={candles} />
@@ -131,18 +131,18 @@ export default function InstrumentDetail() {
       <div className="border border-border">
         <div className="border-b border-border px-4 py-2.5 flex items-center justify-between">
           <span className="text-[11px] text-muted-foreground uppercase tracking-wide">
-            Berita Terkait
+            {t.instrumentDetail.relatedNews}
           </span>
           {!newsLoading && (
-            <span className="text-[11px] text-muted-foreground">{news.length} artikel</span>
+            <span className="text-[11px] text-muted-foreground">{t.instrumentDetail.articleCount(news.length)}</span>
           )}
         </div>
         {newsLoading ? (
           <NewsLoadingSkeleton />
         ) : news.length === 0 ? (
           <EmptyState
-            title="Belum ada berita"
-            description="Berita untuk instrumen ini belum tersedia di Firestore."
+            title={t.instrumentDetail.noNewsTitle}
+            description={t.instrumentDetail.noNewsDesc}
           />
         ) : (
           <div className="divide-y divide-border">

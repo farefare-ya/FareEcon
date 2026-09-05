@@ -1,22 +1,24 @@
-import { INSTRUMENTS } from "@/lib/types";
 import { useWatchlist } from "@/hooks/useWatchlist";
+import { useLanguage, useInstrumentsList } from "@/lib/language";
 
 export default function Watchlist() {
   const { toggle, isWatching, watchlist } = useWatchlist();
+  const { t } = useLanguage();
+  const instruments = useInstrumentsList();
 
   return (
     <div className="max-w-xl">
       <div className="mb-6">
         <h1 className="text-sm font-semibold text-foreground tracking-wide uppercase mb-0.5">
-          Watchlist
+          {t.watchlist.title}
         </h1>
         <p className="text-xs text-muted-foreground">
-          Pilih instrumen yang ingin ditampilkan di dashboard utama. Preferensi disimpan di browser.
+          {t.watchlist.subtitle}
         </p>
       </div>
 
       <div className="border border-border divide-y divide-border">
-        {INSTRUMENTS.map((inst) => {
+        {instruments.map((inst) => {
           const watching = isWatching(inst.id);
           return (
             <div
@@ -38,7 +40,7 @@ export default function Watchlist() {
                 onClick={() => toggle(inst.id)}
                 role="switch"
                 aria-checked={watching}
-                aria-label={`${watching ? "Hapus" : "Tambah"} ${inst.label}`}
+                aria-label={`${watching ? t.watchlist.remove : t.watchlist.add} ${inst.label}`}
                 className="relative w-10 h-5 shrink-0 rounded-full transition-colors duration-200"
                 style={{ backgroundColor: watching ? "var(--accent)" : "var(--border)" }}
               >
@@ -54,9 +56,11 @@ export default function Watchlist() {
 
       <div className="mt-4 px-4 py-3 border border-border bg-card">
         <p className="text-xs text-muted-foreground leading-relaxed">
-          Saat ini memantau{" "}
-          <span className="text-accent font-medium">{watchlist.length} instrumen</span>. Data
-          disimpan di localStorage browser ini dan akan hilang jika cache dibersihkan.
+          {t.watchlist.watchingPrefix}{" "}
+          <span className="text-accent font-medium">
+            {watchlist.length} {t.watchlist.watchingUnit(watchlist.length)}
+          </span>
+          {t.watchlist.watchingNote}
         </p>
       </div>
     </div>
