@@ -74,7 +74,10 @@ export interface Translations {
     hours: (n: number) => string;
     days: (n: number) => string;
   };
-  instruments: Record<"USDIDR" | "IHSG" | "BTC" | "GOLD", { label: string; description: string }>;
+  instruments: Record<
+    "USDIDR" | "IHSG" | "BTC" | "GOLD" | "NVDA" | "META" | "GOOGL" | "AAPL" | "LMT" | "PLTR",
+    { label: string; description: string }
+  >;
   categories: Record<
     "monetary_policy" | "geopolitics" | "commodities" | "trade" | "corporate" | "macro_data" | "other",
     string
@@ -179,6 +182,12 @@ const dict: Record<Lang, Translations> = {
       IHSG: { label: "IHSG", description: "Indeks Harga Saham Gabungan" },
       BTC: { label: "Bitcoin", description: "Bitcoin / USD" },
       GOLD: { label: "Emas", description: "Gold Spot / USD" },
+      NVDA: { label: "Nvidia", description: "Saham Nvidia Corporation (NVDA)" },
+      META: { label: "Meta", description: "Saham Meta Platforms (META)" },
+      GOOGL: { label: "Google", description: "Saham Alphabet / Google (GOOGL)" },
+      AAPL: { label: "Apple", description: "Saham Apple Inc. (AAPL)" },
+      LMT: { label: "Lockheed Martin", description: "Saham Lockheed Martin (LMT)" },
+      PLTR: { label: "Palantir", description: "Saham Palantir Technologies (PLTR)" },
     },
 
     categories: {
@@ -286,6 +295,12 @@ const dict: Record<Lang, Translations> = {
       IHSG: { label: "IHSG", description: "Indonesia Composite Stock Price Index" },
       BTC: { label: "Bitcoin", description: "Bitcoin / USD" },
       GOLD: { label: "Gold", description: "Gold Spot / USD" },
+      NVDA: { label: "Nvidia", description: "Nvidia Corporation stock (NVDA)" },
+      META: { label: "Meta", description: "Meta Platforms stock (META)" },
+      GOOGL: { label: "Google", description: "Alphabet / Google stock (GOOGL)" },
+      AAPL: { label: "Apple", description: "Apple Inc. stock (AAPL)" },
+      LMT: { label: "Lockheed Martin", description: "Lockheed Martin stock (LMT)" },
+      PLTR: { label: "Palantir", description: "Palantir Technologies stock (PLTR)" },
     },
 
     categories: {

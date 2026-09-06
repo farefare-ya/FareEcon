@@ -9,7 +9,17 @@ export type Category =
   | "macro_data"
   | "other";
 
-export type InstrumentId = "USDIDR" | "IHSG" | "BTC" | "GOLD";
+export type InstrumentId =
+  | "USDIDR"
+  | "IHSG"
+  | "BTC"
+  | "GOLD"
+  | "NVDA"
+  | "META"
+  | "GOOGL"
+  | "AAPL"
+  | "LMT"
+  | "PLTR";
 
 export interface Signal {
   instrument: InstrumentId;
@@ -45,7 +55,18 @@ export interface PriceCandle {
 // Cuma daftar ID di sini — label & deskripsi diambil dari dictionary bahasa
 // (src/lib/i18n.ts) lewat hook useInstrumentsList()/useCategoriesList() di
 // src/lib/language.tsx, supaya otomatis ikut berubah saat bahasa di-toggle.
-export const INSTRUMENT_IDS: InstrumentId[] = ["USDIDR", "IHSG", "BTC", "GOLD"];
+export const INSTRUMENT_IDS: InstrumentId[] = [
+  "USDIDR",
+  "IHSG",
+  "BTC",
+  "GOLD",
+  "NVDA",
+  "META",
+  "GOOGL",
+  "AAPL",
+  "LMT",
+  "PLTR",
+];
 
 export const CATEGORY_IDS: Category[] = [
   "monetary_policy",

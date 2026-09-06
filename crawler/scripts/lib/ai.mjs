@@ -21,7 +21,9 @@ Balas HANYA dengan JSON valid, tanpa markdown, tanpa backtick, format persis ini
   "summary": "ringkasan 1-2 kalimat memakai kata-katamu sendiri, bahasa Indonesia",
   "sentiment": <angka -1.0 sampai 1.0, negatif = buruk untuk pasar, positif = bagus>,
   "category": "<salah satu: monetary_policy | geopolitics | commodities | trade | corporate | macro_data | other>",
-  "relatedInstruments": [<array string dari: "USDIDR", "IHSG", "BTC", "GOLD", "OTHER">],
+  "relatedInstruments": [<array string dari: "USDIDR", "IHSG", "BTC", "GOLD",
+    "NVDA" (Nvidia), "META" (Meta/Facebook), "GOOGL" (Google/Alphabet),
+    "AAPL" (Apple), "LMT" (Lockheed Martin), "PLTR" (Palantir), "OTHER">],
   "confidence": <angka 0.0-1.0, seberapa yakin analisis ini relevan buat instrumen finansial>
 }
 

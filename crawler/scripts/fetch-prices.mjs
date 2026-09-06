@@ -1,16 +1,24 @@
 import { fetchBtcCandles } from "./lib/fetchers/btc.mjs";
 import { fetchUsdIdrCandles } from "./lib/fetchers/usdidr.mjs";
 import { fetchGoldCandles } from "./lib/fetchers/gold.mjs";
+import { fetchStockCandles } from "./lib/fetchers/stocks.mjs";
 import { upsertPriceCandles } from "./lib/firestore.mjs";
 
 // BTC dan GOLD dua-duanya lewat CoinGecko (GOLD pakai proxy token PAXG yang
 // dipatok ke harga emas asli) — satu sumber, satu pola kode, tanpa API key.
-// USDIDR lewat Frankfurter, juga tanpa key. IHSG masih belum ada sumber
-// gratis yang solid, sengaja belum disertakan.
+// USDIDR lewat Frankfurter, juga tanpa key. Saham AS lewat Stooq, juga tanpa
+// key (lihat catatan jujur di stocks.mjs soal statusnya yang gak resmi).
+// IHSG masih belum ada sumber gratis yang solid, sengaja belum disertakan.
+const US_STOCKS = ["NVDA", "META", "GOOGL", "AAPL", "LMT", "PLTR"];
+
 const JOBS = [
   { instrument: "BTC", fetch: () => fetchBtcCandles(90) },
   { instrument: "USDIDR", fetch: () => fetchUsdIdrCandles(90) },
   { instrument: "GOLD", fetch: () => fetchGoldCandles(90) },
+  ...US_STOCKS.map((ticker) => ({
+    instrument: ticker,
+    fetch: () => fetchStockCandles(ticker),
+  })),
 ];
 
 async function main() {
@@ -29,6 +37,8 @@ async function main() {
     } catch (err) {
       console.error(`[${job.instrument}] GAGAL: ${err.message}`);
     }
+
+    await new Promise((r) => setTimeout(r, 800)); // jeda kecil, sopan ke tiap sumber
   }
 
   console.log("Selesai.");
