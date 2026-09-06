@@ -87,6 +87,7 @@ export default function InstrumentDetail() {
             label={t.instrumentDetail.direction}
             value={signal.direction === "positive" ? t.instrumentCard.positive : t.instrumentCard.negative}
             highlight={signal.direction === "positive" ? "pos" : "neg"}
+            mono={false}
           />
         </div>
       )}
@@ -160,10 +161,12 @@ function StatCell({
   label,
   value,
   highlight,
+  mono = true,
 }: {
   label: string;
   value: string;
   highlight?: "pos" | "neg";
+  mono?: boolean;
 }) {
   const valColor =
     highlight === "pos"
@@ -171,12 +174,13 @@ function StatCell({
       : highlight === "neg"
       ? "text-[var(--risk-high-text)]"
       : "text-foreground";
+  const fontClass = mono ? "font-mono font-medium" : "font-semibold";
   return (
     <div className="bg-background px-4 py-3 min-w-0">
       <div className="text-[11px] text-muted-foreground uppercase tracking-wide mb-1 truncate">
         {label}
       </div>
-      <div className={`text-sm font-mono font-medium whitespace-nowrap ${valColor}`}>{value}</div>
+      <div className={`text-sm ${fontClass} whitespace-nowrap ${valColor}`}>{value}</div>
     </div>
   );
 }
