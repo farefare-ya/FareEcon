@@ -69,6 +69,16 @@ export interface Translations {
   };
   emptyState: { defaultTitle: string; defaultDesc: string };
   riskBadge: { low: string; medium: string; high: string };
+  terms: {
+    linkLabel: string;
+    modalTitle: string;
+    subtitle: string;
+    intro: string;
+    points: string[];
+    warning: string;
+    agreeButton: string;
+    closeButton: string;
+  };
   timeAgo: {
     minutes: (n: number) => string;
     hours: (n: number) => string;
@@ -170,6 +180,24 @@ const dict: Record<Lang, Translations> = {
     },
 
     riskBadge: { low: "RISIKO RENDAH", medium: "RISIKO SEDANG", high: "RISIKO TINGGI" },
+
+    terms: {
+      linkLabel: "Syarat & Ketentuan",
+      modalTitle: "Syarat & Ketentuan Penggunaan",
+      subtitle: "Mohon baca dengan saksama sebelum melanjutkan.",
+      intro:
+        "FareEcon adalah alat bantu observasi sentimen berita ekonomi dan pasar, dibangun untuk tujuan edukasi dan informasi umum. Dengan menggunakan aplikasi ini, Anda menyatakan telah membaca, memahami, dan menyetujui ketentuan berikut secara penuh dan tanpa paksaan:",
+      points: [
+        "Seluruh data, skor sentimen, level risiko, dan grafik harga yang ditampilkan dihasilkan secara otomatis menggunakan model AI/NLP dan sumber data pihak ketiga. Data tersebut dapat mengandung kekeliruan, keterlambatan, atau bias, dan sama sekali bukan merupakan saran keuangan, saran investasi, rekomendasi jual-beli, maupun ajakan untuk melakukan transaksi apa pun.",
+        "Aplikasi ini tidak berafiliasi dengan, tidak diawasi oleh, dan tidak menggantikan peran penasihat keuangan berlisensi, perusahaan sekuritas, maupun otoritas pasar modal resmi mana pun.",
+        "Setiap keputusan ekonomi, keuangan, perdagangan (trading), maupun investasi nyata yang Anda ambil berdasarkan informasi dari aplikasi ini sepenuhnya merupakan keputusan dan tanggung jawab pribadi Anda sendiri.",
+        "Pengembang dan pemilik aplikasi ini secara tegas TIDAK BERTANGGUNG JAWAB atas segala bentuk kerugian finansial, kerugian materiil, maupun kerugian lain dalam bentuk apa pun yang timbul, baik secara langsung maupun tidak langsung, akibat penggunaan aplikasi ini untuk kepentingan ekonomi nyata.",
+      ],
+      warning:
+        'Dengan mengklik "Saya Setuju & Lanjutkan", Anda mengonfirmasi telah memahami risiko di atas dan membebaskan pengembang dari segala tuntutan maupun klaim ganti rugi terkait penggunaan aplikasi ini.',
+      agreeButton: "Saya Setuju & Lanjutkan",
+      closeButton: "Tutup",
+    },
 
     timeAgo: {
       minutes: (n: number) => `${n} menit lalu`,
@@ -283,6 +311,24 @@ const dict: Record<Lang, Translations> = {
     },
 
     riskBadge: { low: "LOW RISK", medium: "MEDIUM RISK", high: "HIGH RISK" },
+
+    terms: {
+      linkLabel: "Terms & Conditions",
+      modalTitle: "Terms & Conditions of Use",
+      subtitle: "Please read carefully before continuing.",
+      intro:
+        "FareEcon is an economic and market news sentiment observation tool, built for educational and general informational purposes. By using this application, you confirm that you have read, understood, and fully agree to the following terms, without coercion:",
+      points: [
+        "All data, sentiment scores, risk levels, and price charts displayed are generated automatically using AI/NLP models and third-party data sources. This data may contain errors, delays, or bias, and does not in any way constitute financial advice, investment advice, a buy/sell recommendation, or a solicitation to carry out any transaction.",
+        "This application is not affiliated with, is not supervised by, and does not replace the role of any licensed financial advisor, brokerage firm, or official capital market authority.",
+        "Any real economic, financial, trading, or investment decision you make based on information from this application is entirely your own personal decision and responsibility.",
+        "The developer and owner of this application expressly DISCLAIM ALL LIABILITY for any financial loss, material loss, or any other loss whatsoever, arising directly or indirectly from the use of this application for real economic purposes.",
+      ],
+      warning:
+        'By clicking "I Agree & Continue", you confirm that you understand the risks above and release the developer from any claims or demands for damages related to the use of this application.',
+      agreeButton: "I Agree & Continue",
+      closeButton: "Close",
+    },
 
     timeAgo: {
       minutes: (n: number) => `${n}m ago`,

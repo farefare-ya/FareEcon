@@ -3,6 +3,8 @@ import { NavLink, Outlet } from "react-router-dom";
 import { LayoutDashboard, Newspaper, Star, Sun, Moon, Languages } from "lucide-react";
 import { useTheme } from "@/lib/theme";
 import { useLanguage } from "@/lib/language";
+import TermsModal from "@/components/TermsModal";
+import TermsLink from "@/components/TermsLink";
 
 export default function Layout() {
   const { t } = useLanguage();
@@ -59,6 +61,9 @@ export default function Layout() {
 
         <div className="px-4 py-3 border-t border-border">
           <ClockDisplay />
+          <div className="mt-2.5 pt-2.5 border-t border-border/60">
+            <TermsLink className="text-xs" />
+          </div>
         </div>
       </aside>
 
@@ -91,6 +96,14 @@ export default function Layout() {
           );
         })}
       </nav>
+
+      {/* Link "Syarat & Ketentuan" versi mobile — mengambang tepat di atas
+          bottom tab bar (yang lebarnya penuh), pojok kiri, biar gak numpuk. */}
+      <div className="md:hidden fixed bottom-16 left-2 z-30 bg-background/90 backdrop-blur-sm px-2 py-1 rounded-t">
+        <TermsLink className="text-[11px]" />
+      </div>
+
+      <TermsModal />
     </div>
   );
 }
